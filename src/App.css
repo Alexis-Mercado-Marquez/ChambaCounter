@@ -1,0 +1,17 @@
+#root {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    background-color: white !important;
+}
+
+body {
+    background-color: #212529 !important;
+    display: block !important;
+}
+
+.div-tarjeta {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
