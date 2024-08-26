@@ -4,7 +4,7 @@ import { Container, Card, CardBody, Row, Col, Button } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador }) => {
-	const [puntos, setPuntos] = useState(0);
+	const [puntos, setPuntos] = useState(jugadorPrev.puntos);
 
 	useEffect(() => {
 		actualizarJugadores();
