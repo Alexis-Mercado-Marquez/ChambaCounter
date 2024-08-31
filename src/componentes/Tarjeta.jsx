@@ -38,8 +38,8 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 			<Card>
 				<CardBody style={{ backgroundColor: `${jugadorPrev.color}`, borderColor: `${jugadorPrev.color}` }}>
 					<Row>
-						<Col xs="6"><h3>{jugadorPrev.nombre}</h3></Col>
-						<Col xs="6"><h2>{puntos}</h2></Col>
+						<Col xs="6"><h1 className="texto-grande">{jugadorPrev.nombre}</h1></Col>
+						<Col xs="6"><h1 className="texto-grande">{puntos}</h1></Col>
 					</Row>
 					<Row>
 						<Col xs="6"><Button outline onClick={() => borrarJugador(jugadorPrev.id)}>Quitar</Button></Col>

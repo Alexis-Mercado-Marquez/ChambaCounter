@@ -56,9 +56,17 @@ const Jugadores = () => {
     const cargarJugadores = async (e) => {
         e.preventDefault();
 
+        if (e.target.files.length == 0) {
+            return; //Si no hay archivos
+        }
+
         if (jugadores.length > 0) {
             var respuesta = window.confirm("Ya hay datos de jugadores. ¿Quiere sobreescribirlos?");
-            if (!respuesta) return;
+            if (!respuesta) {
+                //Limpia el FileInput
+                e.target.files = '';
+                return;
+            }
         }
 
         setJugadores([]);
@@ -107,7 +115,7 @@ const Jugadores = () => {
 
             setJugadores(listaJugadores);
         };
-
+        
         //Lee el contenido del archivo
         reader.readAsText(e.target.files[0]);
     }
