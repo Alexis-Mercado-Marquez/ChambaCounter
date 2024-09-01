@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Container, Card, CardBody, Row, Col, Button } from 'reactstrap';
+import { Container, Card, CardBody, Row, Col } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador }) => {
@@ -42,9 +42,9 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 						<Col xs="6"><h1 className="texto-grande">{puntos}</h1></Col>
 					</Row>
 					<Row>
-						<Col xs="6"><Button outline onClick={() => borrarJugador(jugadorPrev.id)}>Quitar</Button></Col>
-						<Col xs="3"><Button outline onClick={decrementar}>-</Button></Col>
-						<Col xs="3"><Button outline onClick={incrementar}>+</Button></Col>
+						<Col xs="6"><button className="boton-tarjeta" onClick={() => borrarJugador(jugadorPrev.id)}>Quitar</button></Col>
+						<Col xs="3"><button className="boton-tarjeta" onClick={decrementar}>-</button></Col>
+						<Col xs="3"><button className="boton-tarjeta" onClick={incrementar}>+</button></Col>
 					</Row>
 				</CardBody>
 			</Card>

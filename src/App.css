@@ -17,5 +17,17 @@ body {
 }
 
 .texto-grande {
-    -webkit-text-stroke: 1px white;
+    color: white;
+    -webkit-text-stroke: 1px #404040;
 }
+
+.boton-tarjeta {
+    color: #404040;
+    background-color: white;
+    border-color: #404040;
+}
+
+    .boton-tarjeta:hover {
+        background-color: #D8D8D8;
+        border-color: #A0A0A0;
+    }

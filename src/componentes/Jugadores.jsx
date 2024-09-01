@@ -14,9 +14,9 @@ const Jugadores = () => {
 
     const fileInputRef = useRef(); //Referencia para poder acceder a los eventos del file input
 
-    /*useEffect(() => {
+    useEffect(() => {
         console.log(jugadores);
-    }, [jugadores]);*/
+    }, [jugadores]);
 
     const borrarJugador = (idBorrar) => {
         var respuesta = window.confirm("¿Quieres borrar a este jugador?");
@@ -94,7 +94,7 @@ const Jugadores = () => {
                         //Busca la propiedad con ese nombre y le asigna el valor correspondiente
                         switch (propiedades[0]) {
                             case "id":
-                                nuevoJugador.id = propiedades[1];
+                                nuevoJugador.id = Number(propiedades[1]);
                                 break;
                             case "nombre":
                                 nuevoJugador.nombre = propiedades[1];
@@ -114,6 +114,10 @@ const Jugadores = () => {
             }
 
             setJugadores(listaJugadores);
+
+            //Le asigna a la cuenta el valor del id más alto mas uno
+            const ultimo = listaJugadores.reduce((prev, actual) => (prev && prev.id > actual.id) ? prev : actual);
+            setCuenta(ultimo.id + 1);
         };
         
         //Lee el contenido del archivo
