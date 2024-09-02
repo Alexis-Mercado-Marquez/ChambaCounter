@@ -31,3 +31,17 @@ body {
         background-color: #D8D8D8;
         border-color: #A0A0A0;
     }
+
+.contenedor-tab {
+    margin-top: 10px;
+}
+
+.nav-tab:hover {
+    cursor:pointer
+}
+
+.div-grafico {
+    margin-top: 10px;
+    width: 630px;
+    height: 500px;
+}

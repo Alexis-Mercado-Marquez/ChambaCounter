@@ -5,18 +5,17 @@ import 'bootstrap/dist/css/bootstrap.css';
 import ModalNuevo from './ModalNuevo';
 import Tarjeta from './Tarjeta';
 
-const Jugadores = () => {
+const Jugadores = ({ jugadores, setJugadores }) => {
     const [mostrarModal, setMostrarModal] = useState(false); //Mostrar u ocultar el modal de creación
-    const [jugadores, setJugadores] = useState([]); //Lista de jugadores (cada uno con una tarjeta)
     const [cuenta, setCuenta] = useState(0); //Cuenta usada para crear los id únicos
     const [unidades, setUnidades] = useState(1); //Cuantas unidades incremente o decrementan los puntos
     const [mostrarOpc, setMostrarOpc] = useState(false); //Mostrar u ócultar las opciones del botón
 
     const fileInputRef = useRef(); //Referencia para poder acceder a los eventos del file input
 
-    useEffect(() => {
+    /*useEffect(() => {
         console.log(jugadores);
-    }, [jugadores]);
+    }, [jugadores]);*/
 
     const borrarJugador = (idBorrar) => {
         var respuesta = window.confirm("¿Quieres borrar a este jugador?");
@@ -125,7 +124,7 @@ const Jugadores = () => {
     }
 
     return (
-        <Container>
+        <Container className="contenedor-tab">
             <Row>
                 <Col><Input type="number" name="aumento" value={unidades} onChange={(e) => setUnidades(e.target.value)} /></Col>
                 <Col><Button color="primary" size="sm" onClick={() => setMostrarModal(true)}>Nuevo</Button></Col>
