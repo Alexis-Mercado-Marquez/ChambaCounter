@@ -1,63 +1,79 @@
 import React from 'react';
-import { ResponsiveContainer, BarChart, Bar, XAxis } from 'recharts';
+import { Button, ButtonGroup } from 'reactstrap';
+import { ResponsiveContainer, BarChart, Bar, XAxis, Cell, PieChart, Pie } from 'recharts';
+import { useState, useEffect } from 'react';
 
-const Grafica = () => {
+const Grafica = ({ jugadores }) => {
+    const [grafico, setGrafico] = useState("barras"); //Mostrar la gráfica de barras o la de pastel
+    const foo_height = 500;
 
-    const data = [
-        {
-            name: 'Page A',
-            uv: 4000,
-            pv: 2400,
-            amt: 2400
-        },
-        {
-            name: 'Page B',
-            uv: 3000,
-            pv: 1398,
-            amt: 2210
-        },
-        {
-            name: 'Page C',
-            uv: 2000,
-            pv: 9800,
-            amt: 2290
-        },
-        {
-            name: 'Page D',
-            uv: 2780,
-            pv: 3908,
-            amt: 2000
-        },
-        {
-            name: 'Page E',
-            uv: 1890,
-            pv: 4800,
-            amt: 2181
-        },
-        {
-            name: 'Page F',
-            uv: 2390,
-            pv: 3800,
-            amt: 2500
-        },
-        {
-            name: 'Page G',
-            uv: 3490,
-            pv: 4300,
-            amt: 2100
-        },
-    ];
+    /*useEffect(() => {
+        console.log(jugadores);
+    }, [jugadores]);*/
 
-	return (
-        <div className="div-grafico">
-            <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={data} margin={{ top: 20 }}>
-                    <XAxis dataKey="name" />
-                    <Bar dataKey="uv" fill="#8884d8" label={{ position: 'top' }} />
-                </BarChart>
-            </ResponsiveContainer>
+    /*
+    CORREGIR BUG: al mostrar puntos negativos en la gráfica de pastel
+    añade una propiedad extra al objeto jugador, que también contenga puntos, pero convirtiendo en 0 todos los negativos
+    */
+
+    const RADIAN = Math.PI / 180;
+
+    //Crea la etiqueta con la que muestra los datos en el pastel
+    const renderCustomizedLabel = (props) => {
+        const { cx, cy, midAngle, innerRadius, outerRadius, percent, index, data } = props;
+        const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+        const x = cx + radius * Math.cos(-midAngle * RADIAN);
+        const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+        return (
+            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+                {`${props.nombre}: ${(percent * 100).toFixed(0)}%`}
+            </text>
+        );
+    };
+
+    return (
+        <div className="margen-superior">
+            <ButtonGroup>
+                <Button color="primary" onClick={() => setGrafico("barras")}>Barras</Button>
+                <Button color="danger" onClick={() => setGrafico("pastel")}>Pastel</Button>
+            </ButtonGroup>
+
+            <div className="div-grafico margen-superior">
+                {grafico == "barras" ? 
+                    <ResponsiveContainer width="100%" height={foo_height}>
+                        <BarChart data={jugadores} margin={{ top: 20 }} width="100%" height="100%">
+                            <XAxis dataKey="nombre" />
+                            <Bar dataKey="puntos" fill="#8884d8" label={{ position: 'top', fontSize: 25 }} >
+                                {jugadores.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                ))}
+                            </Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
+                    :
+                    <ResponsiveContainer width="100%" height={foo_height}>
+                        <PieChart width={500} height={500}>
+                            <Pie
+                                data={jugadores}
+                                cx="50%"
+                                cy="50%"
+                                labelLine={false}
+                                label={renderCustomizedLabel}
+                                outerRadius={200}
+                                fill="#8884d8"
+                                dataKey="puntos"
+                            >
+                                {jugadores.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                ))}
+                            </Pie>
+                        </PieChart>
+                    </ResponsiveContainer>
+                }
+            </div>
         </div>
-	);
+    );
 }
 
 export default Grafica;

@@ -124,7 +124,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
     }
 
     return (
-        <Container className="contenedor-tab">
+        <Container className="margen-superior">
             <Row>
                 <Col><Input type="number" name="aumento" value={unidades} onChange={(e) => setUnidades(e.target.value)} /></Col>
                 <Col><Button color="primary" size="sm" onClick={() => setMostrarModal(true)}>Nuevo</Button></Col>

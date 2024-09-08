@@ -32,16 +32,15 @@ body {
         border-color: #A0A0A0;
     }
 
-.contenedor-tab {
-    margin-top: 10px;
-}
-
 .nav-tab:hover {
     cursor:pointer
 }
 
 .div-grafico {
-    margin-top: 10px;
     width: 630px;
     height: 500px;
+}
+
+.margen-superior {
+    margin-top: 10px;
 }

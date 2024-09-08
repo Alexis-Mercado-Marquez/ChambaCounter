@@ -32,7 +32,8 @@ function App() {
                         setJugadores={setJugadores} />
                 </TabPane>
                 <TabPane tabId="2">
-                    <Grafica />
+                    <Grafica
+                        jugadores={jugadores} />
                 </TabPane>
             </TabContent>
         </Container>
