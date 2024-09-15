@@ -44,3 +44,16 @@ body {
 .margen-superior {
     margin-top: 10px;
 }
+
+/*Reescalar para otras ventanas*/
+@media screen and (max-width: 960px) {
+    .texto-grande {
+        font-size: medium;
+    }
+}
+
+@media screen and (min-width: 961px) {
+    .texto-grande {
+        font-size: xx-large;
+    }
+}

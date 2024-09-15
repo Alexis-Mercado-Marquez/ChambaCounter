@@ -11,11 +11,14 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 	}, [puntos]);
 
 	const actualizarJugadores = () => {
+		const ptsPositivos = puntos > 0 ? puntos : 0;
+
 		const jugadorActual = {
 			id: jugadorPrev.id,
 			nombre: jugadorPrev.nombre,
 			color: jugadorPrev.color,
-			puntos: puntos
+			puntos: puntos,
+			ptsPositivos: ptsPositivos
 		};
 
 		const listaJugadores = jugadores.map((jug) =>

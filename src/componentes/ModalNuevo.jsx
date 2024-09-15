@@ -33,7 +33,8 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, cuenta, setC
             id: cuenta,
             nombre: nombre,
             color: color,
-            puntos: 0
+            puntos: 0,
+            ptsPositivos: 0
         };
         setJugadores(
             [...jugadores, nuevoJugador]

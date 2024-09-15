@@ -63,7 +63,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
             var respuesta = window.confirm("Ya hay datos de jugadores. ¿Quiere sobreescribirlos?");
             if (!respuesta) {
                 //Limpia el FileInput
-                e.target.files = '';
+                e.target.files = null;
                 return;
             }
         }
@@ -83,7 +83,8 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                     id: 0,
                     nombre: "",
                     color: "#000000",
-                    puntos: 0
+                    puntos: 0,
+                    ptsPositivos: 0
                 };
 
                 for (const fila of filas) {
@@ -102,7 +103,9 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                                 nuevoJugador.color = propiedades[1];
                                 break;
                             case "puntos":
-                                nuevoJugador.puntos = Number(propiedades[1]);
+                                const misPuntos = Number(propiedades[1]);
+                                nuevoJugador.puntos = misPuntos;
+                                nuevoJugador.ptsPositivos = misPuntos > 0 ? misPuntos : 0;
                                 break;
                         };
                     }

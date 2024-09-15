@@ -62,7 +62,7 @@ const Grafica = ({ jugadores }) => {
                                 label={renderCustomizedLabel}
                                 outerRadius={200}
                                 fill="#8884d8"
-                                dataKey="puntos"
+                                dataKey="ptsPositivos"
                             >
                                 {jugadores.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={entry.color} />
