@@ -5,16 +5,17 @@ import { useState, useEffect } from 'react';
 
 const Grafica = ({ jugadores }) => {
     const [grafico, setGrafico] = useState("barras"); //Mostrar la gráfica de barras o la de pastel
+    const [radio, setRadio] = useState(1.0); //Radio de la gráfica de pastel
     const foo_height = 500;
 
-    /*useEffect(() => {
-        console.log(jugadores);
-    }, [jugadores]);*/
+    useEffect(() => {
+        const resizeObserver = new ResizeObserver((event) => {
+            //Obtiene la anchura del contenedor
+            setRadio(event[0].contentBoxSize[0].inlineSize * 0.35);
+        });
 
-    /*
-    CORREGIR BUG: al mostrar puntos negativos en la gráfica de pastel
-    añade una propiedad extra al objeto jugador, que también contenga puntos, pero convirtiendo en 0 todos los negativos
-    */
+        resizeObserver.observe(document.getElementById("div-grafico"));
+    });
 
     const RADIAN = Math.PI / 180;
 
@@ -26,7 +27,7 @@ const Grafica = ({ jugadores }) => {
         const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
         return (
-            <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+            <text x={x} y={y} fill="black" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
                 {`${props.nombre}: ${(percent * 100).toFixed(0)}%`}
             </text>
         );
@@ -39,7 +40,7 @@ const Grafica = ({ jugadores }) => {
                 <Button color="danger" onClick={() => setGrafico("pastel")}>Pastel</Button>
             </ButtonGroup>
 
-            <div className="div-grafico margen-superior">
+            <div id="div-grafico" className="margen-superior">
                 {grafico == "barras" ? 
                     <ResponsiveContainer width="100%" height={foo_height}>
                         <BarChart data={jugadores} margin={{ top: 20 }} width="100%" height="100%">
@@ -53,15 +54,14 @@ const Grafica = ({ jugadores }) => {
                     </ResponsiveContainer>
                     :
                     <ResponsiveContainer width="100%" height={foo_height}>
-                        <PieChart width={500} height={500}>
+                        <PieChart width="100%" height="100%">
                             <Pie
                                 data={jugadores}
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
                                 label={renderCustomizedLabel}
-                                outerRadius={200}
-                                fill="#8884d8"
+                                outerRadius={radio}
                                 dataKey="ptsPositivos"
                             >
                                 {jugadores.map((entry, index) => (

@@ -41,7 +41,12 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 			<Card>
 				<CardBody style={{ backgroundColor: `${jugadorPrev.color}`, borderColor: `${jugadorPrev.color}` }}>
 					<Row>
-						<Col xs="6"><h1 className="texto-grande">{jugadorPrev.nombre}</h1></Col>
+						<Col xs="6">
+							{ jugadorPrev.nombre.length < 9 ?
+								<h1 className="texto-grande">{jugadorPrev.nombre}</h1> :
+								<h1 className="texto-mediano">{jugadorPrev.nombre}</h1>
+							}
+						</Col>
 						<Col xs="6"><h1 className="texto-grande">{puntos}</h1></Col>
 					</Row>
 					<Row>
