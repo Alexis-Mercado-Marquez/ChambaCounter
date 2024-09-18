@@ -60,10 +60,10 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         }
 
         if (jugadores.length > 0) {
-            var respuesta = window.confirm("Ya hay datos de jugadores. ¿Quiere sobreescribirlos?");
+            const respuesta = window.confirm("Ya hay datos de jugadores. ¿Quiere sobreescribirlos?");
             if (!respuesta) {
                 //Limpia el FileInput
-                e.target.files = null;
+                e.target.value = "";
                 return;
             }
         }
