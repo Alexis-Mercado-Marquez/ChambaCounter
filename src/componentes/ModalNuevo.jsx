@@ -65,8 +65,8 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, cuenta, setC
             </ModalBody>
 
             <ModalFooter>
-                <Button color="primary" size="sm" onClick={() => agregarJugador()}>Agregar</Button>
                 <Button color="danger" size="sm" onClick={() => cerrarModal()}>Cerrar</Button>
+                <Button color="primary" size="sm" onClick={() => agregarJugador()}>Agregar</Button>
             </ModalFooter>
         </Modal>
     );

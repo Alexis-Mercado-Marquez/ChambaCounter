@@ -1,22 +1,23 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Container, Card, CardBody, Row, Col } from 'reactstrap';
+import { Container, Card, CardBody, Row, Col, Input } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador }) => {
 	const [puntos, setPuntos] = useState(jugadorPrev.puntos);
+	const [nombre, setNombre] = useState(jugadorPrev.nombre);
 
 	useEffect(() => {
 		actualizarJugadores();
-	}, [puntos]);
+	}, [puntos, nombre]);
 
 	const actualizarJugadores = () => {
 		const ptsPositivos = puntos > 0 ? puntos : 0;
 
 		const jugadorActual = {
 			id: jugadorPrev.id,
-			nombre: jugadorPrev.nombre,
 			color: jugadorPrev.color,
+			nombre: nombre,
 			puntos: puntos,
 			ptsPositivos: ptsPositivos
 		};
@@ -42,10 +43,7 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 				<CardBody style={{ backgroundColor: `${jugadorPrev.color}`, borderColor: `${jugadorPrev.color}` }}>
 					<Row>
 						<Col xs="6">
-							{ jugadorPrev.nombre.length < 9 ?
-								<h1 className="texto-grande">{jugadorPrev.nombre}</h1> :
-								<h1 className="texto-mediano">{jugadorPrev.nombre}</h1>
-							}
+							<Input placeholder="Jugador" value={nombre} onChange={(e) => setNombre(e.target.value)} />
 						</Col>
 						<Col xs="6"><h1 className="texto-grande">{puntos}</h1></Col>
 					</Row>
