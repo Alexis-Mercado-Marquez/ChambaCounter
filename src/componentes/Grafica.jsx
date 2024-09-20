@@ -33,10 +33,14 @@ const Grafica = ({ jugadores }) => {
         );
     };
 
-    //A: Intentar ponder los números dentro del gráfico
-    //B: Ponerlos a la derecha si hay negativos y a la izquierda si no
-    //C: Colocar los nombres de los jugadores del lado opuesto
-    //D: Tener un segundo eje x con los números fijos
+    //A : Ponerlos a la derecha si hay negativos y a la izquierda si no
+    //B : Intentar poner los números dentro del gráfico
+    //C+: Colocar los nombres de los jugadores del lado opuesto
+    //D+: Tener un segundo eje x con los números fijos
+
+    const renderCustomBarLabel = ({ payload, x, y, width, height, value }) => {
+        return <text x={x} y={y + height / 2} fill="#666" textAnchor="right" dy={-6}>{value}</text>;
+    };
 
     return (
         <div className="margen-superior">
@@ -51,13 +55,13 @@ const Grafica = ({ jugadores }) => {
                         <BarChart data={jugadores} layout="vertical" margin={{ top: 20, left: 20, right: 20 }}
                         >
                             <XAxis hide axisLine={false} type="number" />
-                            <YAxis yAxisId={0} dataKey="nombre" type="category"
-                            />
+                            <YAxis yAxisId={0} dataKey="nombre" type="category" />
                             <Bar
                                 dataKey="puntos"
                                 fill="#8884d8"
                                 barSize={32}
-                                label={{ position: 'left', fontSize: 25 }}
+                                label={renderCustomBarLabel}
+                                //label={{ position: 'right', fontSize: 25 }}
                             >
                                 {jugadores.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={entry.color} />
