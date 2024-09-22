@@ -33,13 +33,13 @@ const Grafica = ({ jugadores }) => {
         );
     };
 
-    //A : Ponerlos a la derecha si hay negativos y a la izquierda si no
-    //B : Intentar poner los números dentro del gráfico
-    //C+: Colocar los nombres de los jugadores del lado opuesto
-    //D+: Tener un segundo eje x con los números fijos
-
+    //Renderiza el label con el número de cada barra
     const renderCustomBarLabel = ({ payload, x, y, width, height, value }) => {
-        return <text x={x} y={y + height / 2} fill="#666" textAnchor="right" dy={-6}>{value}</text>;
+        //Calcula su posición de forma diferente si es un número positivo (la barra va a la derecha) o negativo (la barra va a la izquierda)
+        const posicion_x = value >= 0 ? x + width + 6 : x + 6;
+        const posicion_y = y + (height / 2) + 6;
+
+        return <text x={posicion_x} y={posicion_y} fill="#666" textAnchor="right" className="texto-barra">{value}</text>;
     };
 
     return (

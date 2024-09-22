@@ -62,8 +62,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         if (jugadores.length > 0) {
             const respuesta = window.confirm("Ya hay datos de jugadores. ¿Quiere sobreescribirlos?");
             if (!respuesta) {
-                //Limpia el FileInput
-                e.target.value = "";
+                e.target.value = ""; //Limpia el fileInput
                 return;
             }
         }
@@ -124,6 +123,9 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         
         //Lee el contenido del archivo
         reader.readAsText(e.target.files[0]);
+
+        //Por último, limpia el FileInput
+        e.target.value = "";
     }
 
     return (
