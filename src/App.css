@@ -17,6 +17,7 @@ body {
 .div-tarjeta {
     margin-top: 10px;
     margin-bottom: 10px;
+    padding: 0px !important;
 }
 
 .texto-grande, .texto-mediano {
@@ -35,6 +36,17 @@ body {
         border-color: #A0A0A0;
     }
 
+.boton-borrar {
+    color: #404040;
+    background-color: #FFBFBF;
+    border-color: #404040;
+}
+
+    .boton-borrar:hover {
+        background-color: #FF7F7F;
+        border-color: #A0A0A0;
+    }
+
 .nav-tab:hover {
     cursor:pointer
 }
@@ -45,6 +57,19 @@ body {
 
 .texto-barra {
     font-size: 20px;
+}
+
+/*Reescalar para otras ventanas*/
+@media screen and (max-width: 575px) {
+    .boton-borrar {
+        margin-top: 10px;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .boton-borrar {
+        margin-top: 0px;
+    }
 }
 
 /*Reescalar para otras ventanas*/

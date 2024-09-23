@@ -159,17 +159,19 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                 setCuenta={setCuenta}
             />
 
-            {jugadores.map((obj) => (
-                <div key={obj.id}>
-                    <Tarjeta
-                        jugadorPrev={obj}
-                        jugadores={jugadores}
-                        setJugadores={setJugadores}
-                        unidades={unidades}
-                        borrarJugador={borrarJugador}
-                    />
-                </div>
-            ))}
+            <Row>
+                {jugadores.map((obj) => (
+                    <Col xs="6" key={obj.id}>
+                        <Tarjeta
+                            jugadorPrev={obj}
+                            jugadores={jugadores}
+                            setJugadores={setJugadores}
+                            unidades={unidades}
+                            borrarJugador={borrarJugador}
+                        />
+                    </Col>
+                ))}
+            </Row>
         </Container>
     );
 }

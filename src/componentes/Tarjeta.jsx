@@ -42,13 +42,11 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 			<Card>
 				<CardBody style={{ backgroundColor: `${jugadorPrev.color}`, borderColor: `${jugadorPrev.color}` }}>
 					<Row>
-						<Col xs="10"><Input placeholder="Jugador" value={nombre} onChange={(e) => setNombre(e.target.value)} /></Col>
-						<Col xs="2"><button className="boton-tarjeta" onClick={() => borrarJugador(jugadorPrev.id)}>X</button></Col>
-					</Row>
-					<Row>
-						<Col xs="2"><button className="boton-tarjeta margen-superior" onClick={decrementar}>-</button></Col>
-						<Col xs="2"><button className="boton-tarjeta margen-superior" onClick={incrementar}>+</button></Col>
-						<Col xs="8"><h1 className="texto-grande">{puntos}</h1></Col>
+						<Col sm="9" xs="12"><Input placeholder="Jugador" value={nombre} onChange={(e) => setNombre(e.target.value)} /></Col>
+						<Col sm="3" xs="4"><button className="boton-borrar" onClick={() => borrarJugador(jugadorPrev.id)}>X</button></Col>
+						<Col sm="2" xs="4"><button className="boton-tarjeta margen-superior" onClick={decrementar}>-</button></Col>
+						<Col sm="2" xs="4"><button className="boton-tarjeta margen-superior" onClick={incrementar}>+</button></Col>
+						<Col sm="8" xs="12"><h1 className="texto-grande">{puntos}</h1></Col>
 					</Row>
 				</CardBody>
 			</Card>
