@@ -10,12 +10,20 @@ const Jugadores = ({ jugadores, setJugadores }) => {
     const [cuenta, setCuenta] = useState(0); //Cuenta usada para crear los id únicos
     const [unidades, setUnidades] = useState(1); //Cuantas unidades incremente o decrementan los puntos
     const [mostrarOpc, setMostrarOpc] = useState(false); //Mostrar u ócultar las opciones del botón
+    const [imprimir, setImprimir] = useState(false); //¿Va a imprimir la página?
 
     const fileInputRef = useRef(); //Referencia para poder acceder a los eventos del file input
 
     /*useEffect(() => {
         console.log(jugadores);
     }, [jugadores]);*/
+
+    useEffect(() => {
+        if (imprimir == true) {
+            setImprimir(false);
+            window.print();
+        }
+    }, [imprimir]);
 
     const borrarJugador = (idBorrar) => {
         var respuesta = window.confirm("¿Quieres borrar a este jugador?");
@@ -142,6 +150,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                             <DropdownItem header>Jugadores</DropdownItem>
                             <DropdownItem onClick={() => fileInputRef.current.click()}>Subir</DropdownItem>
                             <DropdownItem disabled={jugadores.length == 0} onClick={() => descargarJugadores()}>Descargar</DropdownItem>
+                            <DropdownItem disabled={jugadores.length == 0} onClick={() => setImprimir(true)}>Imprimir</DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem disabled={jugadores.length == 0} onClick={() => borrarTodo()}>Borrar</DropdownItem>
                         </DropdownMenu>

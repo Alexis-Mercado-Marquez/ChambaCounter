@@ -43,9 +43,9 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 				<CardBody style={{ backgroundColor: `${jugadorPrev.color}`, borderColor: `${jugadorPrev.color}` }}>
 					<Row>
 						<Col sm="9" xs="12"><Input placeholder="Jugador" value={nombre} onChange={(e) => setNombre(e.target.value)} /></Col>
-						<Col sm="3" xs="4"><button className="boton-borrar" onClick={() => borrarJugador(jugadorPrev.id)}>X</button></Col>
-						<Col sm="2" xs="4"><button className="boton-tarjeta margen-superior" onClick={decrementar}>-</button></Col>
-						<Col sm="2" xs="4"><button className="boton-tarjeta margen-superior" onClick={incrementar}>+</button></Col>
+						<Col sm="3" xs="4"><button className="boton boton-borrar" onClick={() => borrarJugador(jugadorPrev.id)}><b>X</b></button></Col>
+						<Col sm="2" xs="4"><button className="boton boton-tarjeta margen-superior" onClick={decrementar}><b>-</b></button></Col>
+						<Col sm="2" xs="4"><button className="boton boton-tarjeta margen-superior" onClick={incrementar}><b>+</b></button></Col>
 						<Col sm="8" xs="12"><h1 className="texto-grande">{puntos}</h1></Col>
 					</Row>
 				</CardBody>

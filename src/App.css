@@ -7,6 +7,7 @@
     padding-right: 0px;
     text-align: center;
     background-color: white !important;
+    -webkit-print-color-adjust: exact;
 }
 
 body {
@@ -23,6 +24,13 @@ body {
 .texto-grande, .texto-mediano {
     color: white;
     -webkit-text-stroke: 1px #404040;
+}
+
+.boton {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 6px;
+    padding-bottom: 6px;
 }
 
 .boton-tarjeta {
