@@ -1,6 +1,8 @@
-import React from 'react';
+//import React from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { Container, Row, Col, Input, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { useState, useRef, useEffect } from 'react';
+import { toPng } from 'html-to-image';
+import format from 'date-fns/format';
 import 'bootstrap/dist/css/bootstrap.css';
 import ModalNuevo from './ModalNuevo';
 import Tarjeta from './Tarjeta';
@@ -10,20 +12,15 @@ const Jugadores = ({ jugadores, setJugadores }) => {
     const [cuenta, setCuenta] = useState(0); //Cuenta usada para crear los id únicos
     const [unidades, setUnidades] = useState(1); //Cuantas unidades incremente o decrementan los puntos
     const [mostrarOpc, setMostrarOpc] = useState(false); //Mostrar u ócultar las opciones del botón
-    const [imprimir, setImprimir] = useState(false); //¿Va a imprimir la página?
 
     const fileInputRef = useRef(); //Referencia para poder acceder a los eventos del file input
+    const playersRef = useRef(null); //Referencia al elemento html que contiene a los jugadores
 
     /*useEffect(() => {
         console.log(jugadores);
     }, [jugadores]);*/
 
-    useEffect(() => {
-        if (imprimir == true) {
-            setImprimir(false);
-            window.print();
-        }
-    }, [imprimir]);
+    const getFileName = fileType => `${format(new Date(), "'SomeName-'HH-mm-ss")}.${fileType}`;
 
     const borrarJugador = (idBorrar) => {
         var respuesta = window.confirm("¿Quieres borrar a este jugador?");
@@ -136,6 +133,23 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         e.target.value = "";
     }
 
+    const descargarPng = useCallback(() => {
+        if (playersRef.current === null) {
+            return
+        }
+        //Convierte la zona de jugadores en un archivo png
+        toPng(playersRef.current, { cacheBust: true, })
+            .then((dataUrl) => {
+                const link = document.createElement('a')
+                link.download = `${getFileName('png')}`
+                link.href = dataUrl
+                link.click()
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    }, [playersRef]);
+
     return (
         <Container className="margen-superior">
             <Row>
@@ -150,7 +164,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                             <DropdownItem header>Jugadores</DropdownItem>
                             <DropdownItem onClick={() => fileInputRef.current.click()}>Subir</DropdownItem>
                             <DropdownItem disabled={jugadores.length == 0} onClick={() => descargarJugadores()}>Descargar</DropdownItem>
-                            <DropdownItem disabled={jugadores.length == 0} onClick={() => setImprimir(true)}>Imprimir</DropdownItem>
+                            <DropdownItem disabled={jugadores.length == 0} onClick={descargarPng}>Imprimir</DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem disabled={jugadores.length == 0} onClick={() => borrarTodo()}>Borrar</DropdownItem>
                         </DropdownMenu>
@@ -168,19 +182,22 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                 setCuenta={setCuenta}
             />
 
-            <Row>
-                {jugadores.map((obj) => (
-                    <Col xs="6" key={obj.id}>
-                        <Tarjeta
-                            jugadorPrev={obj}
-                            jugadores={jugadores}
-                            setJugadores={setJugadores}
-                            unidades={unidades}
-                            borrarJugador={borrarJugador}
-                        />
-                    </Col>
-                ))}
-            </Row>
+            <div ref={playersRef}>
+                <Row>
+                    {jugadores.map((obj) => (
+                        <Col xs="6" key={obj.id}>
+                            <Tarjeta
+                                jugadorPrev={obj}
+                                jugadores={jugadores}
+                                setJugadores={setJugadores}
+                                unidades={unidades}
+                                borrarJugador={borrarJugador}
+                            />
+                        </Col>
+                    ))}
+                </Row>
+            </div>
+
         </Container>
     );
 }

@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Jugadores from './componentes/Jugadores';
 import Grafica from './componentes/Grafica';
 import { Container, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
@@ -7,6 +7,18 @@ import { Container, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstra
 function App() {
     const [jugadores, setJugadores] = useState([]); //Lista de jugadores (cada uno con una tarjeta)
     const [tabActiva, setTabActiva] = useState("1"); //Pestaña seleccionada (jugadores o gráfico)
+    const [cargaInicial, setcargaInicial] = useState(true);
+
+    useEffect(() => {
+        if (cargaInicial == true) {
+            setJugadores(JSON.parse(localStorage.getItem('lista-jugadores')));
+            setcargaInicial(false);
+        }
+        else {
+            //Guarda los datos de los jugadores en la memoria local
+            localStorage.setItem('lista-jugadores', JSON.stringify(jugadores));
+        }
+    }, [jugadores]);
 
     return (
         <Container>
