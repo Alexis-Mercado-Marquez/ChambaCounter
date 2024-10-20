@@ -133,22 +133,28 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         e.target.value = "";
     }
 
-    const descargarPng = useCallback(() => {
+    const guardarImagen = async (e) => {
         if (playersRef.current === null) {
             return
         }
         //Convierte la zona de jugadores en un archivo png
         toPng(playersRef.current, { cacheBust: true, })
-            .then((dataUrl) => {
-                const link = document.createElement('a')
-                link.download = `${getFileName('png')}`
-                link.href = dataUrl
-                link.click()
+            .then(async (dataUrl) => {
+                //Descargar imagen
+                //const link = document.createElement('a');
+                //link.download = `${getFileName('png')}`;
+                //link.href = dataUrl;
+                //link.click();
+
+                const copiedImage = await fetch(dataUrl); //Obtiene la imagen de la url
+                const blobData = await copiedImage.blob(); //La convierte en un objeto blob (datos brutos)
+                const clipboardItemInput = new ClipboardItem({ 'image/png': blobData });
+                navigator.clipboard.write([clipboardItemInput]); //Copia la imagen en el portapapeles
             })
             .catch((err) => {
                 console.error(err)
             })
-    }, [playersRef]);
+    };
 
     return (
         <Container className="margen-superior">
@@ -164,7 +170,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                             <DropdownItem header>Jugadores</DropdownItem>
                             <DropdownItem onClick={() => fileInputRef.current.click()}>Subir</DropdownItem>
                             <DropdownItem disabled={jugadores.length == 0} onClick={() => descargarJugadores()}>Descargar</DropdownItem>
-                            <DropdownItem disabled={jugadores.length == 0} onClick={descargarPng}>Imprimir</DropdownItem>
+                            <DropdownItem disabled={jugadores.length == 0} onClick={guardarImagen}>Copiar imagen</DropdownItem>
                             <DropdownItem divider />
                             <DropdownItem disabled={jugadores.length == 0} onClick={() => borrarTodo()}>Borrar</DropdownItem>
                         </DropdownMenu>
