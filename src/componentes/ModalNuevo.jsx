@@ -1,20 +1,25 @@
 import React from 'react';
-import { Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Input, Label, Button } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter, Row, Col, Input, Label, Button } from 'reactstrap';
 import { HexColorPicker } from "react-colorful";
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, cuenta, setCuenta }) => {
-    const [nombre, setNombre] = useState("");
-    const [color, setColor] = useState("#aabbcc");
+    const colorBase = "#aabbcc";
 
-    //Evita que aparezca un mensaje de error relativo a la obsolecencia de las "defaultProps"
+    const [nombre, setNombre] = useState("");
+    const [color, setColor] = useState(colorBase);
+    const [hex, setHex] = useState(colorBase);
+    const reg = /^#([0-9a-f]{3}){1,2}$/i;
+
     useEffect(() => {
         setNombre("");
-        setColor("#aabbcc");
+        setColor(colorBase);
+        setHex(colorBase);
 
         const originalConsoleError = console.error;
 
+        //Evita que aparezca un mensaje de error relativo a la obsolecencia de las "defaultProps"
         console.error = (...args) => {
             if (typeof args[0] === "string" && /defaultProps/.test(args[0])) {
                 return;
@@ -27,6 +32,23 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, cuenta, setC
             console.error = originalConsoleError;
         };
     }, [mostrar]);
+
+    useEffect(() => {
+        //Actualiza el color si 'hex' es un código válido
+        if (reg.test(hex)) {
+            setColor(hex);
+        }
+        else {
+            setColor('#FFFFFF');
+        }
+    }, [hex]);
+
+    useEffect(() => {
+        //Actualiza 'hex' si 'color' no tiene su valor por defecto
+        if (color != '#FFFFFF') {
+            setHex(color);
+        }
+    }, [color]);
 
     const agregarJugador = () => {
         const nuevoJugador = {
@@ -52,16 +74,17 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, cuenta, setC
         <Modal isOpen={mostrar}>
             <ModalHeader>Agregar jugador</ModalHeader>
             <ModalBody>
-                <Form>
-                    <FormGroup>
+                <Row>
+                    <Col sm="6" xs="6">
                         <Label>Nombre</Label>
-                        <Input name="nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} />
-                    </FormGroup>
-                    <FormGroup>
+                        <Input name="nombre" value={nombre} onChange={(e) => setNombre(e.target.value)} /><br />
                         <Label>Color</Label>
+                        <Input name="color" value={hex} onChange={(e) => setHex(e.target.value)} />
+                    </Col>
+                    <Col sm="6" xs="6">
                         <HexColorPicker color={color} onChange={setColor} />
-                    </FormGroup>
-                </Form>
+                    </Col>
+                </Row>
             </ModalBody>
 
             <ModalFooter>
