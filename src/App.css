@@ -71,6 +71,10 @@ body {
     text-align: left;
 }
 
+.fondo-blanco {
+    background: white;
+}
+
 /*Reescalar para otras ventanas*/
 @media screen and (max-width: 575px) {
     .boton-borrar {

@@ -4,7 +4,7 @@ import { HexColorPicker } from "react-colorful";
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, cuenta, setCuenta }) => {
+const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
     const colorBase = "#aabbcc";
 
     const [nombre, setNombre] = useState("");
@@ -51,8 +51,14 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, cuenta, setC
     }, [color]);
 
     const agregarJugador = () => {
+
+        //Obtiene el id mas alto de la lista de jugadores
+        const idMaximo = jugadores.map(j => j.id).reduce(
+            (idMax, idActual) => idActual > idMax ? idActual : idMax, 0
+        );
+
         const nuevoJugador = {
-            id: cuenta,
+            id: idMaximo + 1,
             nombre: nombre,
             color: color,
             puntos: 0,
@@ -62,7 +68,6 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, cuenta, setC
             [...jugadores, nuevoJugador]
         );
         
-        setCuenta(c => c + 1);
         setMostrar(false);
     }
 

@@ -9,7 +9,6 @@ import Tarjeta from './Tarjeta';
 
 const Jugadores = ({ jugadores, setJugadores }) => {
     const [mostrarModal, setMostrarModal] = useState(false); //Mostrar u ocultar el modal de creación
-    const [cuenta, setCuenta] = useState(0); //Cuenta usada para crear los id únicos
     const [unidades, setUnidades] = useState(1); //Cuantas unidades incremente o decrementan los puntos
     const [mostrarOpc, setMostrarOpc] = useState(false); //Mostrar u ócultar las opciones del botón
 
@@ -184,8 +183,6 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                 setMostrar={setMostrarModal}
                 jugadores={jugadores}
                 setJugadores={setJugadores}
-                cuenta={cuenta}
-                setCuenta={setCuenta}
             />
 
             <div ref={playersRef}>

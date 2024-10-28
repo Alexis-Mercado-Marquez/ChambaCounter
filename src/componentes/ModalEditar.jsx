@@ -5,8 +5,9 @@ import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const ModalEditar = ({ mostrar, setMostrar, jugadores, setJugadores, jugador }) => {
-    const [nombre, setNombre] = useState(jugador.nombre);
-    const [color, setColor] = useState(jugador.color);
+    const [nombre, setNombre] = useState(jugador.nombre); //Nombre del jugador
+    const [color, setColor] = useState(jugador.color); //Color asociado al jugador
+    const [cambiar, setCambiar] = useState(true); //Indica si se puede actualizar el color
 
     //Color del control de texto
     const [hex, setHex] = useState(jugador.color);
@@ -45,8 +46,10 @@ const ModalEditar = ({ mostrar, setMostrar, jugadores, setJugadores, jugador }) 
 
     useEffect(() => {
         //Actualiza 'hex' si 'color' no tiene su valor por defecto
-        if (color != '#FFFFFF') {
+        if (color != '#FFFFFF' && cambiar == true) {
+            setCambiar(false);
             setHex(color);
+            setCambiar(true);
         }
     }, [color]);
 

@@ -1,12 +1,16 @@
 import React from 'react';
 import { Button, ButtonGroup } from 'reactstrap';
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell, PieChart, Pie } from 'recharts';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { toPng } from 'html-to-image';
 
 const Grafica = ({ jugadores }) => {
     const [grafico, setGrafico] = useState("barras"); //Mostrar la gráfica de barras o la de pastel
     const [radio, setRadio] = useState(1.0); //Radio de la gráfica de pastel
+
+    const graphicRef = useRef(null); //Referencia al elemento html que contiene el gráfico
     const foo_height = 500;
+    const RADIAN = Math.PI / 180;
 
     useEffect(() => {
         const resizeObserver = new ResizeObserver((event) => {
@@ -16,8 +20,6 @@ const Grafica = ({ jugadores }) => {
 
         resizeObserver.observe(document.getElementById("div-grafico"));
     });
-
-    const RADIAN = Math.PI / 180;
 
     //Crea la etiqueta con la que muestra los datos en el pastel
     const renderCustomizedLabel = (props) => {
@@ -42,14 +44,32 @@ const Grafica = ({ jugadores }) => {
         return <text x={posicion_x} y={posicion_y} fill="#666" textAnchor="right" className="texto-barra">{value}</text>;
     };
 
+    //Convierte la zona de jugadores en un archivo png
+    const guardarImagen = async (e) => {
+        if (graphicRef.current === null) {
+            return
+        }
+        toPng(graphicRef.current, { cacheBust: true, })
+            .then(async (dataUrl) => {
+                const copiedImage = await fetch(dataUrl); //Obtiene la imagen de la url
+                const blobData = await copiedImage.blob(); //La convierte en un objeto blob (datos brutos)
+                const clipboardItemInput = new ClipboardItem({ 'image/png': blobData });
+                navigator.clipboard.write([clipboardItemInput]); //Copia la imagen en el portapapeles
+            })
+            .catch((err) => {
+                console.error(err)
+            })
+    };
+
     return (
         <div className="margen-superior">
             <ButtonGroup>
-                <Button color="secondary" onClick={() => setGrafico("barras")}>Barras</Button>
-                <Button color="secondary" onClick={() => setGrafico("pastel")}>Pastel</Button>
+                <Button color="primary" onClick={() => setGrafico("barras")}>Barras</Button>
+                <Button color="danger" onClick={() => setGrafico("pastel")}>Pastel</Button>
             </ButtonGroup>
+            <Button color="secondary" onClick={guardarImagen}>Copiar</Button>
 
-            <div id="div-grafico" className="margen-superior">
+            <div id="div-grafico" ref={graphicRef} className="margen-superior fondo-blanco">
                 {grafico == "barras" ? 
                     <ResponsiveContainer width="100%" height={foo_height}>
                         <BarChart data={jugadores} layout="vertical" margin={{ top: 20, left: 20, right: 20 }}
