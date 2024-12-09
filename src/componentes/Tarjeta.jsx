@@ -1,8 +1,9 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Container, Card, CardBody, Row, Col, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Container, Card, CardBody, CardImg, Row, Col, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 import ModalEditar from './ModalEditar';
+import ImgPlaceholder from '../assets/Usuario.png';
 
 const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador }) => {
 	const [puntos, setPuntos] = useState(jugadorPrev.puntos); //Cuantos puntos tiene el jugador
@@ -44,27 +45,43 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 			<Card>
 				<CardBody style={{ backgroundColor: `${jugadorPrev.color}`, borderColor: `${jugadorPrev.color}` }}>
 					<Row>
-						{/*<Col sm="9" xs="12"><Input placeholder="Jugador" value={nombre} onChange={(e) => setNombre(e.target.value)} /></Col>*/}
-						{/*<Col sm="3" xs="4"><button className="boton boton-borrar" onClick={() => borrarJugador(jugadorPrev.id)}><b>X</b></button></Col>*/}
-						<Col sm="3" xs="3"><button className="boton boton-tarjeta margen-superior" onClick={incrementar}><b>+</b></button></Col>
-						<Col sm="9" xs="9"><h1 className="texto-grande izquierda">{jugadorPrev.nombre}</h1></Col>
-						<Col sm="3" xs="3"><button className="boton boton-tarjeta margen-superior" onClick={decrementar}><b>-</b></button></Col>
-						<Col sm="6" xs="6"><h1 className="texto-grande izquierda">{puntos}</h1></Col>
-						<Col sm="3" xs="3">
-							<ButtonDropdown isOpen={mostrarOpc} toggle={() => setMostrarOpc(!mostrarOpc)}
-								className="margen-superior">
-								<DropdownToggle caret>
-									
-								</DropdownToggle>
-								<DropdownMenu>
-									<DropdownItem onClick={() => setMostrarModal(true)}>Editar</DropdownItem>
-									<DropdownItem onClick={() => borrarJugador(jugadorPrev.id)}>Borrar</DropdownItem>
-								</DropdownMenu>
-							</ButtonDropdown>
+						<Col sm="2" xs="2">
+							<Row>
+								<Col xs="12">
+									<ButtonDropdown isOpen={mostrarOpc} toggle={() => setMostrarOpc(!mostrarOpc)}
+										className="margen-superior">
+										<DropdownToggle caret>
+
+										</DropdownToggle>
+										<DropdownMenu>
+											<DropdownItem onClick={() => setMostrarModal(true)}>Editar</DropdownItem>
+											<DropdownItem onClick={() => borrarJugador(jugadorPrev.id)}>Borrar</DropdownItem>
+										</DropdownMenu>
+									</ButtonDropdown>
+								</Col>
+							</Row>
+							<Row>
+								<Col xs="12"><button className="boton boton-tarjeta margen-superior" onClick={incrementar}><b>+</b></button></Col>
+							</Row>
+							<Row>
+								<Col xs="12"><button className="boton boton-tarjeta margen-superior" onClick={decrementar}><b>-</b></button></Col>
+							</Row>
+						</Col>
+						<Col sm="6" xs="6">
+							<Row>
+								<Col xs="12"><h1 className="texto-grande izquierda">{jugadorPrev.nombre}</h1></Col>
+							</Row>
+							<Row>
+								<Col xs="12"><h1 className="texto-grande izquierda">{puntos}</h1></Col>
+							</Row>
+						</Col>
+						<Col sm="4" xs="4">
+							<CardImg top width="100%" src={ImgPlaceholder} alt="Jugador" />
 						</Col>
 					</Row>
 				</CardBody>
 			</Card>
+
 
 			<ModalEditar
 				mostrar={mostrarModal}
