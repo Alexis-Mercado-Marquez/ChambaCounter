@@ -1,4 +1,3 @@
-//import React from 'react';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { Container, Row, Col, Input, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { toPng } from 'html-to-image';
@@ -19,7 +18,8 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         console.log(jugadores);
     }, [jugadores]);*/
 
-    const getFileName = fileType => `${format(new Date(), "'SomeName-'HH-mm-ss")}.${fileType}`;
+    //En caso de querer descargar la imagen en vez de copiarla, descomenta esto
+    const getFileName = fileType => `${format(new Date(), "'Imagen-CC-'HH-mm-ss")}.${fileType}`;
 
     const borrarJugador = (idBorrar) => {
         var respuesta = window.confirm("¿Quieres borrar a este jugador?");

@@ -28,5 +28,11 @@
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
     "vite": "^5.3.4"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [ "chrome-extension://caoacbimdbbljakfhgikoodekdnlcgpk/public/font/ProximaNova-Bold-webfont.woff2" ],
+      "matches": [ "https://effulgent-sherbet-d99c0b.netlify.app/" ]
+    }
+  ]
 }

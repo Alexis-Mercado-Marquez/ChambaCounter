@@ -11,7 +11,10 @@ function App() {
 
     useEffect(() => {
         if (cargaInicial == true) {
-            setJugadores(JSON.parse(localStorage.getItem('lista-jugadores')));
+            //Evita un bug en caso de que aún no exista el objeto
+            if (localStorage.getItem('lista-jugadores') !== null) {
+                setJugadores(JSON.parse(localStorage.getItem('lista-jugadores')));
+            }
             setcargaInicial(false);
         }
         else {
