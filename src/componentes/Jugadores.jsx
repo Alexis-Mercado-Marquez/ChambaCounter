@@ -158,7 +158,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
     return (
         <Container className="margen-superior">
             <Row>
-                <Col xs="6"><Input type="number" name="aumento" value={unidades} onChange={(e) => setUnidades(e.target.value)} /></Col>
+                <Col xs="6"><Input type="number" name="aumento" title="aumento" value={unidades} onChange={(e) => setUnidades(e.target.value)} /></Col>
                 <Col xs="3"><Button color="primary" size="sm" onClick={() => setMostrarModal(true)}>Nuevo</Button></Col>
                 <Col xs="3">
                     <ButtonDropdown isOpen={mostrarOpc} toggle={() => setMostrarOpc(!mostrarOpc)}>
@@ -175,7 +175,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                         </DropdownMenu>
                     </ButtonDropdown>
                 </Col>
-                <Col xs="12"><input type='file' ref={fileInputRef} multiple={false} onChange={(e) => cargarJugadores(e)} hidden /></Col>
+                <Col xs="12"><input type='file' title='' ref={fileInputRef} multiple={false} onChange={(e) => cargarJugadores(e)} accept=".txt" placeholder='nada' hidden /></Col>
             </Row>
 
             <ModalNuevo

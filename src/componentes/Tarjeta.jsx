@@ -61,10 +61,10 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 								</Col>
 							</Row>
 							<Row>
-								<Col xs="12"><button className="boton boton-tarjeta margen-superior" onClick={incrementar}><b>+</b></button></Col>
+								<Col xs="12"><button type="button" className="boton boton-tarjeta margen-superior" onClick={incrementar}><b>+</b></button></Col>
 							</Row>
 							<Row>
-								<Col xs="12"><button className="boton boton-tarjeta margen-superior" onClick={decrementar}><b>-</b></button></Col>
+								<Col xs="12"><button type="button" className="boton boton-tarjeta margen-superior" onClick={decrementar}><b>-</b></button></Col>
 							</Row>
 						</Col>
 						<Col sm="6" xs="6">
@@ -76,6 +76,7 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 							</Row>
 						</Col>
 						<Col sm="4" xs="4">
+							<span className="apoyo"></span>
 							<CardImg top width="100%" src={ImgPlaceholder} alt="Jugador" />
 						</Col>
 					</Row>

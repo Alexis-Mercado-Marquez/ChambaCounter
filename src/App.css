@@ -27,6 +27,7 @@ body {
 }
 
 .boton {
+    width: 40px;
     padding-left: 12px;
     padding-right: 12px;
     padding-top: 6px;
@@ -73,6 +74,18 @@ body {
 
 .fondo-blanco {
     background: white;
+}
+
+/*Alinear la imagen en medio verticalmente*/
+.apoyo {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+/*Falta limitar el tamaño de la imagen*/
+img {
+    vertical-align: middle;
 }
 
 /*Reescalar para otras ventanas*/
