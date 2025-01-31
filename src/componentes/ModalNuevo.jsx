@@ -1,8 +1,10 @@
 import React from 'react';
+import Form from 'react-bootstrap/Form';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Row, Col, Input, Label, Button } from 'reactstrap';
 import { HexColorPicker } from "react-colorful";
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
+import ImgPlaceholder from '../assets/Usuario.png';
 
 const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
     const colorBase = "#aabbcc";
@@ -88,6 +90,17 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
                     </Col>
                     <Col sm="6" xs="6">
                         <HexColorPicker color={color} onChange={setColor} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col sm="6" xs="6">
+                        <Label>Imagen</Label>
+                        <Form.Select>
+                            <option>Selecciona material</option>
+                        </Form.Select>
+                    </Col>
+                    <Col sm="6" xs="6">
+                        <br/><img top width="64" src={ImgPlaceholder} alt="Jugador" />
                     </Col>
                 </Row>
             </ModalBody>
