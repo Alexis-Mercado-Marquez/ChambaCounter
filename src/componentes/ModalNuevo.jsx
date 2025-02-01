@@ -4,15 +4,36 @@ import { Modal, ModalHeader, ModalBody, ModalFooter, Row, Col, Input, Label, But
 import { HexColorPicker } from "react-colorful";
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import ImgPlaceholder from '../assets/Usuario.png';
 
 const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
     const colorBase = "#aabbcc";
+    const [nombre, setNombre] = useState(""); //Nombre de la tarjeta
+    const [color, setColor] = useState(colorBase); //Color en el cuadro cromático
+    const [hex, setHex] = useState(colorBase); //Color en el campo de texto
+    const [imagen, setImagen] = useState(""); //Imagen seleccionada
+    const reg = /^#([0-9a-f]{3}){1,2}$/i; //Regex para verificar que el código este bien escrito
 
-    const [nombre, setNombre] = useState("");
-    const [color, setColor] = useState(colorBase);
-    const [hex, setHex] = useState(colorBase);
-    const reg = /^#([0-9a-f]{3}){1,2}$/i;
+    let imagenes = [];
+    let idImg = 0;
+
+    //Obtiene todas las imagenes de la carpeta
+    Object.values(import.meta.glob('../assets/imagenes/*.png', { eager: true })).forEach(
+        ({ default: ruta }) => {
+            const url = new URL(ruta, import.meta.url); //Primero obtiene la ruta
+            const segmentos = url.pathname.split("/"); //Luego la separa por carpetas
+            let soloNombre = segmentos[segmentos.length - 1]; //Toma la sección con el nombre
+
+            const data = {
+                id: idImg,
+                ruta: url.pathname,
+                nombre: soloNombre.split(".")[0]
+            };
+            imagenes.push(data);
+
+            idImg++;
+        }
+    );
+    setImagen(imagenes[0].ruta);
 
     useEffect(() => {
         setNombre("");
@@ -96,11 +117,15 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
                     <Col sm="6" xs="6">
                         <Label>Imagen</Label>
                         <Form.Select>
-                            <option>Selecciona material</option>
+                            {imagenes.map((img) => (
+                                <option key={img.id} value={img.ruta}>
+                                    {img.nombre}
+                                </option>
+                            ))}
                         </Form.Select>
                     </Col>
                     <Col sm="6" xs="6">
-                        <br/><img top width="64" src={ImgPlaceholder} alt="Jugador" />
+                        <br/><img width="64" src={imagen} alt="Jugador" />
                     </Col>
                 </Row>
             </ModalBody>
