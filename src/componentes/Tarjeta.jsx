@@ -21,6 +21,7 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 			id: jugadorPrev.id,
 			color: jugadorPrev.color,
 			nombre: jugadorPrev.nombre,
+			imagen: jugadorPrev.imagen,
 			puntos: puntos,
 			ptsPositivos: ptsPositivos
 		};
@@ -77,7 +78,7 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 						</Col>
 						<Col sm="4" xs="4">
 							<span className="apoyo"></span>
-							<CardImg top width="100%" src={ImgPlaceholder} alt="Jugador" />
+							<CardImg top width="100%" src={jugadorPrev.imagen} alt="Jugador" />
 						</Col>
 					</Row>
 				</CardBody>

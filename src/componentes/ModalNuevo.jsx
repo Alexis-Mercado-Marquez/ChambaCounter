@@ -10,14 +10,14 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
     const [nombre, setNombre] = useState(""); //Nombre de la tarjeta
     const [color, setColor] = useState(colorBase); //Color en el cuadro cromático
     const [hex, setHex] = useState(colorBase); //Color en el campo de texto
-    const [imagen, setImagen] = useState(""); //Imagen seleccionada
+    const [imagen, setImagen] = useState({}); //Imagen seleccionada
     const reg = /^#([0-9a-f]{3}){1,2}$/i; //Regex para verificar que el código este bien escrito
 
     let imagenes = [];
     let idImg = 0;
 
     //Obtiene todas las imagenes de la carpeta
-    Object.values(import.meta.glob('../assets/imagenes/*.png', { eager: true })).forEach(
+    Object.values(import.meta.glob('../assets/imagenes/*.jpeg', { eager: true })).forEach(
         ({ default: ruta }) => {
             const url = new URL(ruta, import.meta.url); //Primero obtiene la ruta
             const segmentos = url.pathname.split("/"); //Luego la separa por carpetas
@@ -33,12 +33,13 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
             idImg++;
         }
     );
-    setImagen(imagenes[0].ruta);
 
+    //Carga los valores por defecto de los controles
     useEffect(() => {
         setNombre("");
         setColor(colorBase);
         setHex(colorBase);
+        setImagen(imagenes[0]);
 
         const originalConsoleError = console.error;
 
@@ -56,8 +57,8 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
         };
     }, [mostrar]);
 
+    //Actualiza el color si 'hex' es un código válido
     useEffect(() => {
-        //Actualiza el color si 'hex' es un código válido
         if (reg.test(hex)) {
             setColor(hex);
         }
@@ -66,15 +67,15 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
         }
     }, [hex]);
 
+    //Actualiza 'hex' si 'color' no tiene su valor por defecto
     useEffect(() => {
-        //Actualiza 'hex' si 'color' no tiene su valor por defecto
         if (color != '#FFFFFF') {
             setHex(color);
         }
     }, [color]);
 
+    //Crea un jugador con los datos seleccionados y lo agrega a la lista
     const agregarJugador = () => {
-
         //Obtiene el id mas alto de la lista de jugadores
         const idMaximo = jugadores.map(j => j.id).reduce(
             (idMax, idActual) => idActual > idMax ? idActual : idMax, 0
@@ -84,6 +85,7 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
             id: idMaximo + 1,
             nombre: nombre,
             color: color,
+            imagen: imagen.ruta,
             puntos: 0,
             ptsPositivos: 0
         };
@@ -93,6 +95,12 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
         
         setMostrar(false);
     }
+
+    //Le asigna al select la imagen con el nombre igual al de la opción seleccionada
+    const cambioSelect = (e) => {
+        const objeto = imagenes.find((img) => img.nombre == e.target.value);
+        setImagen(objeto);
+    };
 
     const cerrarModal = () => {
         setMostrar(false);
@@ -116,16 +124,16 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
                 <Row>
                     <Col sm="6" xs="6">
                         <Label>Imagen</Label>
-                        <Form.Select>
+                        <Form.Select value={imagen.nombre} onChange={cambioSelect}>
                             {imagenes.map((img) => (
-                                <option key={img.id} value={img.ruta}>
+                                <option key={img.id} value={img.nombre}>
                                     {img.nombre}
                                 </option>
                             ))}
                         </Form.Select>
                     </Col>
-                    <Col sm="6" xs="6">
-                        <br/><img width="64" src={imagen} alt="Jugador" />
+                    <Col sm="6" xs="6" align="center">
+                        <br/><img width="128" src={imagen.ruta} alt="Material" />
                     </Col>
                 </Row>
             </ModalBody>
