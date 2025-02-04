@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
     const colorBase = "#aabbcc";
     const [nombre, setNombre] = useState(""); //Nombre de la tarjeta
-    const [color, setColor] = useState(colorBase); //Color en el cuadro cromático
+    const [color, setColor] = useState(colorBase); //Color asociado al jugador
     const [hex, setHex] = useState(colorBase); //Color en el campo de texto
     const [imagen, setImagen] = useState({}); //Imagen seleccionada
     const reg = /^#([0-9a-f]{3}){1,2}$/i; //Regex para verificar que el código este bien escrito
