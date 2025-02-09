@@ -36,14 +36,14 @@ const ModalEditar = ({ mostrar, setMostrar, jugadores, setJugadores, jugador }) 
 
     //Carga los valores por defecto de los controles
     useEffect(() => {
-        if (jugador.imagen == null) {
-            jugador.imagen = imagenes[0];
-        }
-
         setNombre(jugador.nombre);
         setColor(jugador.color);
         setHex(jugador.color);
-        setImagen(jugador.imagen);
+
+        if (imagenes.length > 0) {
+            const objeto = imagenes.find((img) => img.ruta == jugador.imagen);
+            setImagen(objeto);
+        }
 
         const originalConsoleError = console.error;
 

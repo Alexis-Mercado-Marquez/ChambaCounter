@@ -42,6 +42,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
             contenido += "id:=" + jugador.id + "\n";
             contenido += "nombre:=" + jugador.nombre + "\n";
             contenido += "color:=" + jugador.color + "\n";
+            contenido += "imagen:=" + jugador.imagen + "\n";
             contenido += "puntos:=" + jugador.puntos + "\n\n";
         }
         contenido = contenido.substring(0, contenido.length - 2);
@@ -104,6 +105,9 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                                 break;
                             case "color":
                                 nuevoJugador.color = propiedades[1];
+                                break;
+                            case "imagen":
+                                nuevoJugador.imagen = propiedades[1];
                                 break;
                             case "puntos":
                                 const misPuntos = Number(propiedades[1]);

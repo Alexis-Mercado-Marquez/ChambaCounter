@@ -30,7 +30,7 @@ function App() {
                 <NavItem className="nav-tab">
                     <NavLink active={tabActiva == "1"}
                         onClick={() => setTabActiva("1")}>
-                        Jugadores
+                        Recursos
                     </NavLink>
                 </NavItem>
                 <NavItem className="nav-tab">
