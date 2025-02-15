@@ -5,7 +5,7 @@ import { HexColorPicker } from "react-colorful";
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
+const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEditar }) => {
     const colorBase = "#aabbcc";
     const [nombre, setNombre] = useState(""); //Nombre de la tarjeta
     const [color, setColor] = useState(colorBase); //Color asociado al jugador
@@ -40,6 +40,13 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores }) => {
         setColor(colorBase);
         setHex(colorBase);
         setImagen(imagenes[0]);
+
+        if (jugadorAEditar == null || jugadorAEditar == undefined) {
+            console.log("Esta vacío");
+        }
+        else {
+            console.log(jugadorAEditar);
+        }
 
         const originalConsoleError = console.error;
 

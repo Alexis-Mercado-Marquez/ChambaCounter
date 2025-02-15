@@ -10,6 +10,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
     const [mostrarModal, setMostrarModal] = useState(false); //Mostrar u ocultar el modal de creación
     const [unidades, setUnidades] = useState(1); //Cuantas unidades incremente o decrementan los puntos
     const [mostrarOpc, setMostrarOpc] = useState(false); //Mostrar u ócultar las opciones del botón
+    const [jugEditado, setJugEditado] = useState(null); //Jugador que se va a editar en el modal
 
     const fileInputRef = useRef(); //Referencia para poder acceder a los eventos del file input
     const playersRef = useRef(null); //Referencia al elemento html que contiene a los jugadores
@@ -21,6 +22,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
     //En caso de querer descargar la imagen en vez de copiarla, descomenta esto
     const getFileName = fileType => `${format(new Date(), "'Imagen-CC-'HH-mm-ss")}.${fileType}`;
 
+    //Elimina al jugador (tarjeta) indicado
     const borrarJugador = (idBorrar) => {
         var respuesta = window.confirm("¿Quieres borrar a este jugador?");
         if (!respuesta) return;
@@ -28,6 +30,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         setJugadores(jugadores.filter((jug) => jug.id !== idBorrar));
     }
 
+    //Elimina a todos los jugadores
     const borrarTodo = () => {
         var respuesta = window.confirm("¿Quieres borrar a todos los jugadores?");
         if (!respuesta) return;
@@ -35,6 +38,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         setJugadores([]);
     }
 
+    //Descarga un archivo txt con los jugadores
     const descargarJugadores = () => {
         //Convierte la lista en una cadena de texto
         let contenido = "";
@@ -57,6 +61,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         element.click(); //Inicia la descarga
     }
 
+    //Carga los datos de un archivo txt
     const cargarJugadores = async (e) => {
         e.preventDefault();
 
@@ -136,6 +141,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         e.target.value = "";
     }
 
+    //Toma una captura de pantalla de la página y la descarga
     const guardarImagen = async (e) => {
         if (playersRef.current === null) {
             return
@@ -159,11 +165,23 @@ const Jugadores = ({ jugadores, setJugadores }) => {
             })
     };
 
+    //Abre el modal para agregar un jugador
+    const abrirModoCreacion = () => {
+        setJugEditado(null);
+        setMostrarModal(true);
+    }
+
+    //Abre el modal, pasando la información de un jugador
+    const abrirModoEdicion = (jugTarjeta) => {
+        setJugEditado(jugTarjeta);
+        setMostrarModal(true);
+    }
+
     return (
         <Container className="margen-superior">
             <Row>
                 <Col xs="6"><Input type="number" name="aumento" title="aumento" value={unidades} onChange={(e) => setUnidades(e.target.value)} /></Col>
-                <Col xs="3"><Button color="primary" size="sm" onClick={() => setMostrarModal(true)}>Nuevo</Button></Col>
+                <Col xs="3"><Button color="primary" size="sm" onClick={() => abrirModoCreacion()}>Nuevo</Button></Col>
                 <Col xs="3">
                     <ButtonDropdown isOpen={mostrarOpc} toggle={() => setMostrarOpc(!mostrarOpc)}>
                         <DropdownToggle caret>
@@ -187,6 +205,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                 setMostrar={setMostrarModal}
                 jugadores={jugadores}
                 setJugadores={setJugadores}
+                jugadorAEditar={jugEditado}
             />
 
             <div ref={playersRef}>
@@ -199,6 +218,7 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                                 setJugadores={setJugadores}
                                 unidades={unidades}
                                 borrarJugador={borrarJugador}
+                                editarJugador={abrirModoEdicion}
                             />
                         </Col>
                     ))}

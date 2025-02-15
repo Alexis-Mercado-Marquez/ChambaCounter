@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import ModalEditar from './ModalEditar';
 import ImgPlaceholder from '../assets/Usuario.png';
 
-const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador }) => {
+const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador, editarJugador }) => {
 	const [puntos, setPuntos] = useState(jugadorPrev.puntos); //Cuantos puntos tiene el jugador
 	const [mostrarOpc, setMostrarOpc] = useState(false); //Mostrar u ócultar las opciones del botón
 	const [mostrarModal, setMostrarModal] = useState(false); //Mostrar u ocultar el modal de creación
@@ -55,7 +55,7 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 
 										</DropdownToggle>
 										<DropdownMenu>
-											<DropdownItem onClick={() => setMostrarModal(true)}>Editar</DropdownItem>
+											<DropdownItem onClick={() => editarJugador(jugadorPrev)}>Editar</DropdownItem>
 											<DropdownItem onClick={() => borrarJugador(jugadorPrev.id)}>Borrar</DropdownItem>
 										</DropdownMenu>
 									</ButtonDropdown>
