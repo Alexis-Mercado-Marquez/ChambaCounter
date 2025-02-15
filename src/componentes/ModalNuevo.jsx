@@ -13,6 +13,8 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
     const [imagen, setImagen] = useState({}); //Imagen seleccionada
     const reg = /^#([0-9a-f]{3}){1,2}$/i; //Regex para verificar que el código este bien escrito
 
+    const [modo, setModo] = useState("Agregar"); //¿El modal es para agregar o editar un jugador?
+
     let imagenes = [];
     let idImg = 0;
 
@@ -34,18 +36,27 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
         }
     );
 
-    //Carga los valores por defecto de los controles
+    //Carga los valores de los controles
     useEffect(() => {
-        setNombre("");
-        setColor(colorBase);
-        setHex(colorBase);
-        setImagen(imagenes[0]);
-
         if (jugadorAEditar == null || jugadorAEditar == undefined) {
-            console.log("Esta vacío");
+            //Si no se recibe un jugador, se le asignan valores por defecto
+            setNombre("");
+            setColor(colorBase);
+            setHex(colorBase);
+            setImagen(imagenes[0]);
+            setModo("Agregar");
         }
         else {
-            console.log(jugadorAEditar);
+            //Si se recibe un jugador, se le asignan sus valores
+            setNombre(jugadorAEditar.nombre);
+            setColor(jugadorAEditar.color);
+            setHex(jugadorAEditar.color);
+
+            if (imagenes.length > 0) {
+                const objeto = imagenes.find((img) => img.ruta == jugadorAEditar.imagen);
+                setImagen(objeto);
+            }
+            setModo("Editar");
         }
 
         const originalConsoleError = console.error;
@@ -103,6 +114,22 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
         setMostrar(false);
     }
 
+    //Modifica el jugador y refresca la lista global
+    const actualizarJugador = () => {
+        const nuevoEstado = jugadores.map(obj => {
+            //Si el id coincide, actualiza el nombre y el color
+            if (obj.id === jugadorAEditar.id) {
+                return { ...obj, nombre: nombre, color: color, imagen: imagen.ruta };
+            }
+
+            //De otro modo, devuelve el objeto sin cambios
+            return obj;
+        });
+
+        setJugadores(nuevoEstado);
+        setMostrar(false);
+    }
+
     //Le asigna al select la imagen con el nombre igual al de la opción seleccionada
     const cambioSelect = (e) => {
         const objeto = imagenes.find((img) => img.nombre == e.target.value);
@@ -115,7 +142,7 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
 
     return (
         <Modal isOpen={mostrar}>
-            <ModalHeader>Agregar jugador</ModalHeader>
+            <ModalHeader>{modo} jugador</ModalHeader>
             <ModalBody>
                 <Row>
                     <Col sm="6" xs="6">
@@ -147,7 +174,11 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
 
             <ModalFooter>
                 <Button color="danger" size="sm" onClick={() => cerrarModal()}>Cerrar</Button>
-                <Button color="primary" size="sm" onClick={() => agregarJugador()}>Agregar</Button>
+                {
+                    modo == "Agregar" ?
+                    <Button color="primary" size="sm" onClick={() => agregarJugador()}>Agregar</Button> :
+                    <Button color="primary" size="sm" onClick={() => actualizarJugador()}>Actualizar</Button>
+                }
             </ModalFooter>
         </Modal>
     );

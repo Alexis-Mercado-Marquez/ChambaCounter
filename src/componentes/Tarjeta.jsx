@@ -2,8 +2,6 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { Container, Card, CardBody, CardImg, Row, Col, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import ModalEditar from './ModalEditar';
-import ImgPlaceholder from '../assets/Usuario.png';
 
 const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador, editarJugador }) => {
 	const [puntos, setPuntos] = useState(jugadorPrev.puntos); //Cuantos puntos tiene el jugador
@@ -83,15 +81,6 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 					</Row>
 				</CardBody>
 			</Card>
-
-
-			<ModalEditar
-				mostrar={mostrarModal}
-				setMostrar={setMostrarModal}
-				jugadores={jugadores}
-				setJugadores={setJugadores}
-				jugador={jugadorPrev}
-			/>
 		</Container>
     );
 }
