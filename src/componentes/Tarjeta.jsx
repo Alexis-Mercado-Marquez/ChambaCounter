@@ -3,32 +3,31 @@ import { useEffect, useState } from 'react';
 import { Container, Card, CardBody, CardImg, Row, Col, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador, editarJugador }) => {
-	const [puntos, setPuntos] = useState(jugadorPrev.puntos); //Cuantos puntos tiene el jugador
+const Tarjeta = ({ recursoPrev, recursos, setRecursos, unidades, borrarRecurso, editarRecurso }) => {
+	const [puntos, setPuntos] = useState(recursoPrev.puntos); //Cuantos puntos tiene el recurso
 	const [mostrarOpc, setMostrarOpc] = useState(false); //Mostrar u ócultar las opciones del botón
-	const [mostrarModal, setMostrarModal] = useState(false); //Mostrar u ocultar el modal de creación
 
 	useEffect(() => {
-		actualizarJugadores();
+		actualizarRecursos();
 	}, [puntos]);
 
-	const actualizarJugadores = () => {
+	const actualizarRecursos = () => {
 		const ptsPositivos = puntos > 0 ? puntos : 0;
 
-		const jugadorActual = {
-			id: jugadorPrev.id,
-			color: jugadorPrev.color,
-			nombre: jugadorPrev.nombre,
-			imagen: jugadorPrev.imagen,
+		const recursoActual = {
+			id: recursoPrev.id,
+			color: recursoPrev.color,
+			nombre: recursoPrev.nombre,
+			imagen: recursoPrev.imagen,
 			puntos: puntos,
 			ptsPositivos: ptsPositivos
 		};
 
-		const listaJugadores = jugadores.map((jug) =>
-			jug.id === jugadorActual.id ? jugadorActual : jug
+		const listaRecursos = recursos.map((rec) =>
+			rec.id === recursoActual.id ? recursoActual : rec
 		);
 
-		setJugadores(listaJugadores);
+		setRecursos(listaRecursos);
 	}
 
 	const incrementar = () => {
@@ -42,7 +41,7 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
     return (
 		<Container className="div-tarjeta">
 			<Card>
-				<CardBody style={{ backgroundColor: `${jugadorPrev.color}`, borderColor: `${jugadorPrev.color}` }}>
+				<CardBody style={{ backgroundColor: `${recursoPrev.color}`, borderColor: `${recursoPrev.color}` }}>
 					<Row>
 						<Col sm="2" xs="2">
 							<Row>
@@ -53,8 +52,8 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 
 										</DropdownToggle>
 										<DropdownMenu>
-											<DropdownItem onClick={() => editarJugador(jugadorPrev)}>Editar</DropdownItem>
-											<DropdownItem onClick={() => borrarJugador(jugadorPrev.id)}>Borrar</DropdownItem>
+											<DropdownItem onClick={() => editarRecurso(recursoPrev)}>Editar</DropdownItem>
+											<DropdownItem onClick={() => borrarRecurso(recursoPrev.id)}>Borrar</DropdownItem>
 										</DropdownMenu>
 									</ButtonDropdown>
 								</Col>
@@ -68,7 +67,7 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 						</Col>
 						<Col sm="6" xs="6">
 							<Row>
-								<Col xs="12"><h1 className="texto-grande izquierda">{jugadorPrev.nombre}</h1></Col>
+								<Col xs="12"><h1 className="texto-grande izquierda">{recursoPrev.nombre}</h1></Col>
 							</Row>
 							<Row>
 								<Col xs="12"><h1 className="texto-grande izquierda">{puntos}</h1></Col>
@@ -76,7 +75,7 @@ const Tarjeta = ({ jugadorPrev, jugadores, setJugadores, unidades, borrarJugador
 						</Col>
 						<Col sm="4" xs="4">
 							<span className="apoyo"></span>
-							<CardImg top width="100%" src={jugadorPrev.imagen} alt="Jugador" />
+							<CardImg top width="100%" src={recursoPrev.imagen} alt="Recurso" />
 						</Col>
 					</Row>
 				</CardBody>

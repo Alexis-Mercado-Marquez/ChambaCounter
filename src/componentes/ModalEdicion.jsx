@@ -5,15 +5,15 @@ import { HexColorPicker } from "react-colorful";
 import { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 
-const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEditar }) => {
+const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEditar }) => {
     const colorBase = "#aabbcc";
     const [nombre, setNombre] = useState(""); //Nombre de la tarjeta
-    const [color, setColor] = useState(colorBase); //Color asociado al jugador
+    const [color, setColor] = useState(colorBase); //Color asociado al recurso
     const [hex, setHex] = useState(colorBase); //Color en el campo de texto
     const [imagen, setImagen] = useState({}); //Imagen seleccionada
     const reg = /^#([0-9a-f]{3}){1,2}$/i; //Regex para verificar que el código este bien escrito
 
-    const [modo, setModo] = useState("Agregar"); //¿El modal es para agregar o editar un jugador?
+    const [modo, setModo] = useState("Agregar"); //¿El modal es para agregar o editar un recurso?
 
     let imagenes = [];
     let idImg = 0;
@@ -38,8 +38,8 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
 
     //Carga los valores de los controles
     useEffect(() => {
-        if (jugadorAEditar == null || jugadorAEditar == undefined) {
-            //Si no se recibe un jugador, se le asignan valores por defecto
+        if (recursoAEditar == null || recursoAEditar == undefined) {
+            //Si no se recibe un recurso, se le asignan valores por defecto
             setNombre("");
             setColor(colorBase);
             setHex(colorBase);
@@ -47,13 +47,13 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
             setModo("Agregar");
         }
         else {
-            //Si se recibe un jugador, se le asignan sus valores
-            setNombre(jugadorAEditar.nombre);
-            setColor(jugadorAEditar.color);
-            setHex(jugadorAEditar.color);
+            //Si se recibe un recurso, se le asignan sus valores
+            setNombre(recursoAEditar.nombre);
+            setColor(recursoAEditar.color);
+            setHex(recursoAEditar.color);
 
             if (imagenes.length > 0) {
-                const objeto = imagenes.find((img) => img.ruta == jugadorAEditar.imagen);
+                const objeto = imagenes.find((img) => img.ruta == recursoAEditar.imagen);
                 setImagen(objeto);
             }
             setModo("Editar");
@@ -92,14 +92,14 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
         }
     }, [color]);
 
-    //Crea un jugador con los datos seleccionados y lo agrega a la lista
-    const agregarJugador = () => {
-        //Obtiene el id mas alto de la lista de jugadores
-        const idMaximo = jugadores.map(j => j.id).reduce(
+    //Crea un recurso con los datos seleccionados y lo agrega a la lista
+    const agregarRecurso = () => {
+        //Obtiene el id mas alto de la lista de recursos
+        const idMaximo = recursos.map(rec => rec.id).reduce(
             (idMax, idActual) => idActual > idMax ? idActual : idMax, 0
         );
 
-        const nuevoJugador = {
+        const nuevoRecurso = {
             id: idMaximo + 1,
             nombre: nombre,
             color: color,
@@ -107,18 +107,18 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
             puntos: 0,
             ptsPositivos: 0
         };
-        setJugadores(
-            [...jugadores, nuevoJugador]
+        setRecursos(
+            [...recursos, nuevoRecurso]
         );
         
         setMostrar(false);
     }
 
-    //Modifica el jugador y refresca la lista global
-    const actualizarJugador = () => {
-        const nuevoEstado = jugadores.map(obj => {
+    //Modifica el recurso y refresca la lista global
+    const actualizarRecurso = () => {
+        const nuevoEstado = recursos.map(obj => {
             //Si el id coincide, actualiza el nombre y el color
-            if (obj.id === jugadorAEditar.id) {
+            if (obj.id === recursoAEditar.id) {
                 return { ...obj, nombre: nombre, color: color, imagen: imagen.ruta };
             }
 
@@ -126,7 +126,7 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
             return obj;
         });
 
-        setJugadores(nuevoEstado);
+        setRecursos(nuevoEstado);
         setMostrar(false);
     }
 
@@ -142,7 +142,7 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
 
     return (
         <Modal isOpen={mostrar}>
-            <ModalHeader>{modo} jugador</ModalHeader>
+            <ModalHeader>{modo} recurso</ModalHeader>
             <ModalBody>
                 <Row>
                     <Col sm="6" xs="6">
@@ -167,7 +167,7 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
                         </Form.Select>
                     </Col>
                     <Col sm="6" xs="6" align="center">
-                        <br/><img width="128" src={imagen.ruta} alt="Material" />
+                        <br/><img width="128" src={imagen.ruta} alt="Recurso" />
                     </Col>
                 </Row>
             </ModalBody>
@@ -176,12 +176,12 @@ const ModalNuevo = ({ mostrar, setMostrar, jugadores, setJugadores, jugadorAEdit
                 <Button color="danger" size="sm" onClick={() => cerrarModal()}>Cerrar</Button>
                 {
                     modo == "Agregar" ?
-                    <Button color="primary" size="sm" onClick={() => agregarJugador()}>Agregar</Button> :
-                    <Button color="primary" size="sm" onClick={() => actualizarJugador()}>Actualizar</Button>
+                    <Button color="primary" size="sm" onClick={() => agregarRecurso()}>Agregar</Button> :
+                    <Button color="primary" size="sm" onClick={() => actualizarRecurso()}>Actualizar</Button>
                 }
             </ModalFooter>
         </Modal>
     );
 }
 
-export default ModalNuevo;
+export default ModalEdicion;

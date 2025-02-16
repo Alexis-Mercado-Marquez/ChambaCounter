@@ -1,53 +1,49 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef } from 'react';
 import { Container, Row, Col, Input, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { toPng } from 'html-to-image';
 import format from 'date-fns/format';
 import 'bootstrap/dist/css/bootstrap.css';
-import ModalNuevo from './ModalNuevo';
+import ModalEdicion from './ModalEdicion';
 import Tarjeta from './Tarjeta';
 
-const Jugadores = ({ jugadores, setJugadores }) => {
+const Tablero = ({ recursos, setRecursos }) => {
     const [mostrarModal, setMostrarModal] = useState(false); //Mostrar u ocultar el modal de creación
     const [unidades, setUnidades] = useState(1); //Cuantas unidades incremente o decrementan los puntos
     const [mostrarOpc, setMostrarOpc] = useState(false); //Mostrar u ócultar las opciones del botón
-    const [jugEditado, setJugEditado] = useState(null); //Jugador que se va a editar en el modal
+    const [recEditado, setRecEditado] = useState(null); //Recurso que se va a editar en el modal
 
-    const fileInputRef = useRef(); //Referencia para poder acceder a los eventos del file input
-    const playersRef = useRef(null); //Referencia al elemento html que contiene a los jugadores
-
-    /*useEffect(() => {
-        console.log(jugadores);
-    }, [jugadores]);*/
+    const refFileInput = useRef(); //Referencia para poder acceder a los eventos del file input
+    const refRecursos = useRef(null); //Referencia al elemento html que contiene a los recursos
 
     //En caso de querer descargar la imagen en vez de copiarla, descomenta esto
-    const getFileName = fileType => `${format(new Date(), "'Imagen-CC-'HH-mm-ss")}.${fileType}`;
+    //const getFileName = fileType => `${format(new Date(), "'Imagen-CC-'HH-mm-ss")}.${fileType}`;
 
-    //Elimina al jugador (tarjeta) indicado
-    const borrarJugador = (idBorrar) => {
-        var respuesta = window.confirm("¿Quieres borrar a este jugador?");
+    //Elimina al recurso (tarjeta) indicado
+    const borrarRecurso = (idBorrar) => {
+        var respuesta = window.confirm("¿Quieres borrar este recurso?");
         if (!respuesta) return;
 
-        setJugadores(jugadores.filter((jug) => jug.id !== idBorrar));
+        setRecursos(recursos.filter((rec) => rec.id !== idBorrar));
     }
 
-    //Elimina a todos los jugadores
+    //Elimina a todos los recursos
     const borrarTodo = () => {
-        var respuesta = window.confirm("¿Quieres borrar a todos los jugadores?");
+        var respuesta = window.confirm("¿Quieres borrar todos los recursos?");
         if (!respuesta) return;
 
-        setJugadores([]);
+        setRecursos([]);
     }
 
-    //Descarga un archivo txt con los jugadores
-    const descargarJugadores = () => {
+    //Descarga un archivo txt con los recursos
+    const descargarRecursos = () => {
         //Convierte la lista en una cadena de texto
         let contenido = "";
-        for (const jugador of jugadores) {
-            contenido += "id:=" + jugador.id + "\n";
-            contenido += "nombre:=" + jugador.nombre + "\n";
-            contenido += "color:=" + jugador.color + "\n";
-            contenido += "imagen:=" + jugador.imagen + "\n";
-            contenido += "puntos:=" + jugador.puntos + "\n\n";
+        for (const recurso of recursos) {
+            contenido += "id:=" + recurso.id + "\n";
+            contenido += "nombre:=" + recurso.nombre + "\n";
+            contenido += "color:=" + recurso.color + "\n";
+            contenido += "imagen:=" + recurso.imagen + "\n";
+            contenido += "puntos:=" + recurso.puntos + "\n\n";
         }
         contenido = contenido.substring(0, contenido.length - 2);
 
@@ -56,39 +52,39 @@ const Jugadores = ({ jugadores, setJugadores }) => {
         const file = new Blob([contenido], { type: 'text/plain' });
 
         element.href = URL.createObjectURL(file);
-        element.download = "jugadores.txt";
+        element.download = "recursos.txt";
         document.body.appendChild(element); //Para firefox
         element.click(); //Inicia la descarga
     }
 
     //Carga los datos de un archivo txt
-    const cargarJugadores = async (e) => {
+    const cargarRecursos = async (e) => {
         e.preventDefault();
 
         if (e.target.files.length == 0) {
             return; //Si no hay archivos
         }
 
-        if (jugadores.length > 0) {
-            const respuesta = window.confirm("Ya hay datos de jugadores. ¿Quiere sobreescribirlos?");
+        if (recursos.length > 0) {
+            const respuesta = window.confirm("Ya hay datos de recursos. ¿Quiere sobreescribirlos?");
             if (!respuesta) {
                 e.target.value = ""; //Limpia el fileInput
                 return;
             }
         }
 
-        setJugadores([]);
-        let listaJugadores = [];
+        setRecursos([]);
+        let listaRecursos = [];
 
         //Código a ejecutar cuando se lee el archivo
         const reader = new FileReader()
         reader.onload = async (e) => {
             const text = (e.target.result);
-            const grupos = text.split("\n\n"); //Separa el texto en grupos; cada uno representa un jugador
+            const grupos = text.split("\n\n"); //Separa el texto en grupos; cada uno representa un recurso
 
             for (const grupo of grupos) {
                 const filas = grupo.split("\n"); //Separa el grupo en filas; cada una representa una propiedad
-                let nuevoJugador = {
+                let nuevoRecurso = {
                     id: 0,
                     nombre: "",
                     color: "#000000",
@@ -103,35 +99,31 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                         //Busca la propiedad con ese nombre y le asigna el valor correspondiente
                         switch (propiedades[0]) {
                             case "id":
-                                nuevoJugador.id = Number(propiedades[1]);
+                                nuevoRecurso.id = Number(propiedades[1]);
                                 break;
                             case "nombre":
-                                nuevoJugador.nombre = propiedades[1];
+                                nuevoRecurso.nombre = propiedades[1];
                                 break;
                             case "color":
-                                nuevoJugador.color = propiedades[1];
+                                nuevoRecurso.color = propiedades[1];
                                 break;
                             case "imagen":
-                                nuevoJugador.imagen = propiedades[1];
+                                nuevoRecurso.imagen = propiedades[1];
                                 break;
                             case "puntos":
                                 const misPuntos = Number(propiedades[1]);
-                                nuevoJugador.puntos = misPuntos;
-                                nuevoJugador.ptsPositivos = misPuntos > 0 ? misPuntos : 0;
+                                nuevoRecurso.puntos = misPuntos;
+                                nuevoRecurso.ptsPositivos = misPuntos > 0 ? misPuntos : 0;
                                 break;
                         };
                     }
                 }
 
-                //Inserta el nuevo jugador en la lista
-                listaJugadores.push(nuevoJugador);
+                //Inserta el nuevo recurso en la lista
+                listaRecursos.push(nuevoRecurso);
             }
 
-            setJugadores(listaJugadores);
-
-            //Le asigna a la cuenta el valor del id más alto mas uno
-            const ultimo = listaJugadores.reduce((prev, actual) => (prev && prev.id > actual.id) ? prev : actual);
-            setCuenta(ultimo.id + 1);
+            setRecursos(listaRecursos);
         };
         
         //Lee el contenido del archivo
@@ -143,11 +135,11 @@ const Jugadores = ({ jugadores, setJugadores }) => {
 
     //Toma una captura de pantalla de la página y la descarga
     const guardarImagen = async (e) => {
-        if (playersRef.current === null) {
+        if (refRecursos.current === null) {
             return
         }
-        //Convierte la zona de jugadores en un archivo png
-        toPng(playersRef.current, { cacheBust: true, })
+        //Convierte la zona de recursos en un archivo png
+        toPng(refRecursos.current, { cacheBust: true, })
             .then(async (dataUrl) => {
                 //Descargar imagen
                 //const link = document.createElement('a');
@@ -165,15 +157,15 @@ const Jugadores = ({ jugadores, setJugadores }) => {
             })
     };
 
-    //Abre el modal para agregar un jugador
+    //Abre el modal para agregar un recurso
     const abrirModoCreacion = () => {
-        setJugEditado(null);
+        setRecEditado(null);
         setMostrarModal(true);
     }
 
-    //Abre el modal, pasando la información de un jugador
-    const abrirModoEdicion = (jugTarjeta) => {
-        setJugEditado(jugTarjeta);
+    //Abre el modal, pasando la información de un recurso
+    const abrirModoEdicion = (recTarjeta) => {
+        setRecEditado(recTarjeta);
         setMostrarModal(true);
     }
 
@@ -188,37 +180,37 @@ const Jugadores = ({ jugadores, setJugadores }) => {
                             Opciones
                         </DropdownToggle>
                         <DropdownMenu>
-                            <DropdownItem header>Jugadores</DropdownItem>
-                            <DropdownItem onClick={() => fileInputRef.current.click()}>Subir</DropdownItem>
-                            <DropdownItem disabled={jugadores.length == 0} onClick={() => descargarJugadores()}>Descargar</DropdownItem>
-                            <DropdownItem disabled={jugadores.length == 0} onClick={guardarImagen}>Copiar imagen</DropdownItem>
+                            <DropdownItem header>Materiales</DropdownItem>
+                            <DropdownItem onClick={() => refFileInput.current.click()}>Subir</DropdownItem>
+                            <DropdownItem disabled={recursos.length == 0} onClick={() => descargarRecursos()}>Descargar</DropdownItem>
+                            <DropdownItem disabled={recursos.length == 0} onClick={guardarImagen}>Copiar imagen</DropdownItem>
                             <DropdownItem divider />
-                            <DropdownItem disabled={jugadores.length == 0} onClick={() => borrarTodo()}>Borrar</DropdownItem>
+                            <DropdownItem disabled={recursos.length == 0} onClick={() => borrarTodo()}>Borrar</DropdownItem>
                         </DropdownMenu>
                     </ButtonDropdown>
                 </Col>
-                <Col xs="12"><input type='file' title='' ref={fileInputRef} multiple={false} onChange={(e) => cargarJugadores(e)} accept=".txt" placeholder='nada' hidden /></Col>
+                <Col xs="12"><input type='file' title='' ref={refFileInput} multiple={false} onChange={(e) => cargarRecursos(e)} accept=".txt" placeholder='nada' hidden /></Col>
             </Row>
 
-            <ModalNuevo
+            <ModalEdicion
                 mostrar={mostrarModal}
                 setMostrar={setMostrarModal}
-                jugadores={jugadores}
-                setJugadores={setJugadores}
-                jugadorAEditar={jugEditado}
+                recursos={recursos}
+                setRecursos={setRecursos}
+                recursoAEditar={recEditado}
             />
 
-            <div ref={playersRef}>
+            <div ref={refRecursos}>
                 <Row>
-                    {jugadores.map((obj) => (
+                    {recursos.map((obj) => (
                         <Col xs="6" key={obj.id}>
                             <Tarjeta
-                                jugadorPrev={obj}
-                                jugadores={jugadores}
-                                setJugadores={setJugadores}
+                                recursoPrev={obj}
+                                recursos={recursos}
+                                setRecursos={setRecursos}
                                 unidades={unidades}
-                                borrarJugador={borrarJugador}
-                                editarJugador={abrirModoEdicion}
+                                borrarRecurso={borrarRecurso}
+                                editarRecurso={abrirModoEdicion}
                             />
                         </Col>
                     ))}
@@ -229,4 +221,4 @@ const Jugadores = ({ jugadores, setJugadores }) => {
     );
 }
 
-export default Jugadores;
+export default Tablero;

@@ -1,27 +1,27 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import Jugadores from './componentes/Jugadores';
+import Tablero from './componentes/Tablero';
 import Grafica from './componentes/Grafica';
 import { Container, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 
 function App() {
-    const [jugadores, setJugadores] = useState([]); //Lista de jugadores (cada uno con una tarjeta)
-    const [tabActiva, setTabActiva] = useState("1"); //Pestaña seleccionada (jugadores o gráfico)
+    const [recursos, setRecursos] = useState([]); //Lista de recursos (cada uno asociado a una tarjeta)
+    const [tabActiva, setTabActiva] = useState("1"); //Pestaña seleccionada (tablero o gráfico)
     const [cargaInicial, setcargaInicial] = useState(true);
 
     useEffect(() => {
         if (cargaInicial == true) {
             //Evita un bug en caso de que aún no exista el objeto
-            if (localStorage.getItem('lista-jugadores') !== null) {
-                setJugadores(JSON.parse(localStorage.getItem('lista-jugadores')));
+            if (localStorage.getItem('lista-recursos') !== null) {
+                setRecursos(JSON.parse(localStorage.getItem('lista-recursos')));
             }
             setcargaInicial(false);
         }
         else {
-            //Guarda los datos de los jugadores en la memoria local
-            localStorage.setItem('lista-jugadores', JSON.stringify(jugadores));
+            //Guarda la lista de recursos en la memoria local
+            localStorage.setItem('lista-recursos', JSON.stringify(recursos));
         }
-    }, [jugadores]);
+    }, [recursos]);
 
     return (
         <Container>
@@ -30,7 +30,7 @@ function App() {
                 <NavItem className="nav-tab">
                     <NavLink active={tabActiva == "1"}
                         onClick={() => setTabActiva("1")}>
-                        Recursos
+                        Tablero
                     </NavLink>
                 </NavItem>
                 <NavItem className="nav-tab">
@@ -42,13 +42,13 @@ function App() {
             </Nav>
             <TabContent activeTab={tabActiva}>
                 <TabPane tabId="1">
-                    <Jugadores
-                        jugadores={jugadores}
-                        setJugadores={setJugadores} />
+                    <Tablero
+                        recursos={recursos}
+                        setRecursos={setRecursos} />
                 </TabPane>
                 <TabPane tabId="2">
                     <Grafica
-                        jugadores={jugadores} />
+                        recursos={recursos} />
                 </TabPane>
             </TabContent>
         </Container>

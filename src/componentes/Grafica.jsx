@@ -4,7 +4,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Cell, PieChart, Pie }
 import { useState, useEffect, useRef } from 'react';
 import { toPng } from 'html-to-image';
 
-const Grafica = ({ jugadores }) => {
+const Grafica = ({ recursos }) => {
     const [grafico, setGrafico] = useState("barras"); //Mostrar la gráfica de barras o la de pastel
     const [radio, setRadio] = useState(1.0); //Radio de la gráfica de pastel
 
@@ -44,7 +44,7 @@ const Grafica = ({ jugadores }) => {
         return <text x={posicion_x} y={posicion_y} fill="#666" textAnchor="right" className="texto-barra">{value}</text>;
     };
 
-    //Convierte la zona de jugadores en un archivo png
+    //Convierte el tablero de recursos en un archivo png
     const guardarImagen = async (e) => {
         if (graphicRef.current === null) {
             return
@@ -72,7 +72,7 @@ const Grafica = ({ jugadores }) => {
             <div id="div-grafico" ref={graphicRef} className="margen-superior fondo-blanco">
                 {grafico == "barras" ? 
                     <ResponsiveContainer width="100%" height={foo_height}>
-                        <BarChart data={jugadores} layout="vertical" margin={{ top: 20, left: 20, right: 20 }}
+                        <BarChart data={recursos} layout="vertical" margin={{ top: 20, left: 20, right: 20 }}
                         >
                             <XAxis hide axisLine={false} type="number" />
                             <YAxis yAxisId={0} dataKey="nombre" type="category" />
@@ -83,7 +83,7 @@ const Grafica = ({ jugadores }) => {
                                 label={renderCustomBarLabel}
                                 //label={{ position: 'right', fontSize: 25 }}
                             >
-                                {jugadores.map((entry, index) => (
+                                {recursos.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={entry.color} />
                                 ))}
                             </Bar>
@@ -93,7 +93,7 @@ const Grafica = ({ jugadores }) => {
                     <ResponsiveContainer width="100%" height={foo_height}>
                         <PieChart width="100%" height="100%">
                             <Pie
-                                data={jugadores}
+                                data={recursos}
                                 cx="50%"
                                 cy="50%"
                                 labelLine={false}
@@ -101,7 +101,7 @@ const Grafica = ({ jugadores }) => {
                                 outerRadius={radio}
                                 dataKey="ptsPositivos"
                             >
-                                {jugadores.map((entry, index) => (
+                                {recursos.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={entry.color} />
                                 ))}
                             </Pie>
