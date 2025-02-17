@@ -64,6 +64,10 @@ body {
     margin-top: 10px;
 }
 
+.margen-derecha {
+    margin-right: 10px;
+}
+
 .texto-barra {
     font-size: 20px;
 }

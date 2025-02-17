@@ -78,6 +78,7 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
     //Actualiza el color si 'hex' es un código válido
     useEffect(() => {
         if (reg.test(hex)) {
+            console.log("Hola");
             setColor(hex);
         }
         else {
@@ -88,6 +89,7 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
     //Actualiza 'hex' si 'color' no tiene su valor por defecto
     useEffect(() => {
         if (color != '#FFFFFF') {
+            console.log("Mundo");
             setHex(color);
         }
     }, [color]);

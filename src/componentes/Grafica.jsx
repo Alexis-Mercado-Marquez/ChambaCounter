@@ -15,7 +15,7 @@ const Grafica = ({ recursos }) => {
     useEffect(() => {
         const resizeObserver = new ResizeObserver((event) => {
             //Obtiene la anchura del contenedor
-            setRadio(event[0].contentBoxSize[0].inlineSize * 0.35);
+            setRadio(event[0].contentBoxSize[0].inlineSize * 0.25);
         });
 
         resizeObserver.observe(document.getElementById("div-grafico"));
@@ -63,7 +63,7 @@ const Grafica = ({ recursos }) => {
 
     return (
         <div className="margen-superior">
-            <ButtonGroup>
+            <ButtonGroup className="margen-derecha">
                 <Button color="primary" onClick={() => setGrafico("barras")}>Barras</Button>
                 <Button color="danger" onClick={() => setGrafico("pastel")}>Pastel</Button>
             </ButtonGroup>
