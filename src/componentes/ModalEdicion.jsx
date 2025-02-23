@@ -14,6 +14,7 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
     const reg = /^#([0-9a-f]{3}){1,2}$/i; //Regex para verificar que el código este bien escrito
 
     const [modo, setModo] = useState("Agregar"); //¿El modal es para agregar o editar un recurso?
+    const [movido, setMovido] = useState(false); //Evita que se quede en un ciclo infinito al actualizar ambos colores
 
     let imagenes = [];
     let idImg = 0;
@@ -78,7 +79,6 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
     //Actualiza el color si 'hex' es un código válido
     useEffect(() => {
         if (reg.test(hex)) {
-            console.log("Hola");
             setColor(hex);
         }
         else {
@@ -88,9 +88,9 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
 
     //Actualiza 'hex' si 'color' no tiene su valor por defecto
     useEffect(() => {
-        if (color != '#FFFFFF') {
-            console.log("Mundo");
+        if (color != '#FFFFFF' && movido == true) {
             setHex(color);
+            setMovido(false);
         }
     }, [color]);
 
@@ -142,6 +142,16 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
         setMostrar(false);
     }
 
+    /*const [coords, setCoords] = useState({ x: 0, y: 0 });
+    const guardarCoordenadas = event => {
+        setCoords({
+            x: event.clientX,
+            y: event.clientY,
+        });
+        console.log("x: " + coords.x);
+        console.log("y: " + coords.y);
+    }*/
+
     return (
         <Modal isOpen={mostrar}>
             <ModalHeader>{modo} recurso</ModalHeader>
@@ -154,7 +164,7 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
                         <Input name="color" value={hex} onChange={(e) => setHex(e.target.value)} />
                     </Col>
                     <Col sm="6" xs="6">
-                        <HexColorPicker color={color} onChange={setColor} />
+                        <HexColorPicker color={color} onChange={setColor} onMouseMove={() => setMovido(true)} />
                     </Col>
                 </Row>
                 <Row>
