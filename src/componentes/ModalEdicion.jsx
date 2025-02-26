@@ -31,6 +31,7 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
                 ruta: url.pathname,
                 nombre: soloNombre.split(".")[0]
             };
+            console.log(data);
             imagenes.push(data);
 
             idImg++;
