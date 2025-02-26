@@ -20,7 +20,7 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
     let idImg = 0;
 
     //Obtiene todas las imagenes de la carpeta
-    Object.values(import.meta.glob('../assets/imagenes/*.jpeg', { eager: true })).forEach(
+    Object.values(import.meta.glob('/public/imagenes/*.jpeg', { eager: true })).forEach(
         ({ default: ruta }) => {
             const url = new URL(ruta, import.meta.url); //Primero obtiene la ruta
             const segmentos = url.pathname.split("/"); //Luego la separa por carpetas
