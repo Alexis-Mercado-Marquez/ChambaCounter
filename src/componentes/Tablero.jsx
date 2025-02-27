@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Container, Row, Col, Input, Button, ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { toPng } from 'html-to-image';
 import format from 'date-fns/format';
@@ -11,6 +11,7 @@ const Tablero = ({ recursos, setRecursos }) => {
     const [unidades, setUnidades] = useState(1); //Cuantas unidades incremente o decrementan los puntos
     const [mostrarOpc, setMostrarOpc] = useState(false); //Mostrar u ócultar las opciones del botón
     const [recEditado, setRecEditado] = useState(null); //Recurso que se va a editar en el modal
+    const [esMovil, setEsMovil] = useState(false); //Indica si es una ventana pequeña o de teléfono
 
     const refFileInput = useRef(); //Referencia para poder acceder a los eventos del file input
     const refRecursos = useRef(null); //Referencia al elemento html que contiene a los recursos
@@ -169,13 +170,25 @@ const Tablero = ({ recursos, setRecursos }) => {
         setMostrarModal(true);
     }
 
+    //Cuando la pantalla cambia de tamaña
+    const manejarReescalado = () => {
+        setEsMovil(window.innerWidth <= 768);
+    }
+
+    useEffect(() => {
+        window.addEventListener('resize', manejarReescalado);
+        return () => {
+            window.removeEventListener('resize', manejarReescalado);
+        }
+    }, []);
+
     return (
         <Container className="margen-superior">
             <Row>
                 <Col xs="6"><Input type="number" name="aumento" title="aumento" value={unidades} onChange={(e) => setUnidades(e.target.value)} /></Col>
                 <Col xs="3"><Button color="primary" size="sm" onClick={() => abrirModoCreacion()}>Nuevo</Button></Col>
                 <Col xs="3">
-                    <ButtonDropdown isOpen={mostrarOpc} toggle={() => setMostrarOpc(!mostrarOpc)}>
+                    <ButtonDropdown isOpen={mostrarOpc} toggle={() => setMostrarOpc(!mostrarOpc)} size="sm">
                         <DropdownToggle caret>
                             Opciones
                         </DropdownToggle>
@@ -203,7 +216,7 @@ const Tablero = ({ recursos, setRecursos }) => {
             <div ref={refRecursos}>
                 <Row>
                     {recursos.map((obj) => (
-                        <Col xs="6" key={obj.id}>
+                        <Col xs={esMovil ? "12" : "6"} key={obj.id}>
                             <Tarjeta
                                 recursoPrev={obj}
                                 recursos={recursos}

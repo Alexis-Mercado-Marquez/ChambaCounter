@@ -80,6 +80,10 @@ body {
     background: white;
 }
 
+.texto-opciones {
+    font-size: 50px;
+}
+
 /*Alinear la imagen en medio verticalmente*/
 .apoyo {
     display: inline-block;
