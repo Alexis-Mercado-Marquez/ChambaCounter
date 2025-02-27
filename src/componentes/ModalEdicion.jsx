@@ -31,7 +31,6 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
                 ruta: url.pathname,
                 nombre: soloNombre.split(".")[0]
             };
-            console.log(data);
             imagenes.push(data);
 
             idImg++;
@@ -174,7 +173,7 @@ const ModalEdicion = ({ mostrar, setMostrar, recursos, setRecursos, recursoAEdit
                         <Form.Select value={imagen.nombre} onChange={cambioSelect}>
                             {imagenes.map((img) => (
                                 <option key={img.id} value={img.nombre}>
-                                    {img.nombre}
+                                    {img.nombre.split("-")[0]}
                                 </option>
                             ))}
                         </Form.Select>
