@@ -23,7 +23,8 @@ body {
 
 .texto-grande, .texto-mediano {
     color: white;
-    -webkit-text-stroke: 1px #404040;
+    -webkit-text-stroke: 3px #404040;
+    paint-order: stroke fill;
 }
 
 .boton {
@@ -117,6 +118,9 @@ img {
     .texto-mediano {
         font-size: 20px;
     }
+    .react-colorful {
+        width: 160px !important;
+    }
 }
 
 @media screen and (min-width: 961px) {
@@ -125,5 +129,8 @@ img {
     }
     .texto-mediano {
         font-size: 30px;
+    }
+    .react-colorful {
+        width: 200px !important;
     }
 }
