@@ -10,11 +10,6 @@
     -webkit-print-color-adjust: exact;
 }
 
-body {
-    background-color: #212529 !important;
-    display: block !important;
-}
-
 .div-tarjeta {
     margin-top: 10px;
     margin-bottom: 10px;
